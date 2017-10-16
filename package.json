@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0"
+  },
+  "name": "bacon-game",
+  "version": "0.1.0",
+  "description": "Client for the game 'Cold Bacon'",
+  "main": "",
+  "repository": "",
+  "author": "Paul Hammerschmidt <hammerschmidtpaul@gmail.com>",
+  "license": ""
+}
