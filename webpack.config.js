@@ -1,0 +1,37 @@
+const path = require("path");
+
+module.exports = {
+  context: __dirname,
+  entry: "./js/ClientApp.jsx",
+  output: {
+    path: path.resolve(__dirname, "public"),
+    filename: "bundle.js",
+    publicPath: "/public/"
+  },
+  resolve: {
+    extensions: [".js", ".jsx", ".json"]
+  },
+  module: {
+    rules: [
+      // {
+      //   test: /\.pug$/,
+      //   loaders: ["pug-loader?self"]
+      // },
+      // {
+      //   test: /\.css$/,
+      //   loaders: ["style-loader", "css-loader"]
+      // },
+      {
+        enforce: "pre",
+        test: /\.jsx?$/,
+        loader: "eslint-loader",
+        exclude: /node_modules/
+      },
+      {
+        test: /\.jsx?$/,
+        loader: "babel-loader",
+        exclude: /node_modules/
+      }
+    ]
+  }
+};
