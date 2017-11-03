@@ -11,6 +11,9 @@ module.exports = {
   resolve: {
     extensions: [".js", ".jsx", ".json"]
   },
+  // resolveLoader: {
+  //   root: path.resolve(__dirname, "node_modules")
+  // },
   devServer: {
     publicPath: "/public/",
     historyApiFallback: true
