@@ -5,11 +5,8 @@
       "targets": {
         "browsers": "last 2 versions"
       },
-      "loose": true,
+      "loose": false,
       "modules": false
     }]
-  ],
-  "plugins": [
-    "transform-class-properties"
   ]
 }
