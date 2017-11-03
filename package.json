@@ -3,10 +3,13 @@
     "build": "webpack",
     "format": "prettier --write --print-width=120 \"js/**/*{js,jsx}\"",
     "lint": "eslint **/*.{js,jsx} --quiet",
-    "dev": "webpack-dev-server"
+    "dev": "webpack-dev-server",
+    "postinstall": "webpack -p",
+    "start": "node server.js"
   },
   "dependencies": {
     "axios": "^0.17.0",
+    "express": "^4.16.2",
     "normalize.css": "^7.0.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
