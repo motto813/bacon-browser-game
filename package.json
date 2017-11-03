@@ -44,7 +44,7 @@
   "version": "0.1.0",
   "description": "Client for the game 'Cold Bacon'",
   "main": "server.js",
-  "repository": "",
+  "repository": "https://github.com/motto813/bacon-browser-game.git",
   "author": "Paul Hammerschmidt <hammerschmidtpaul@gmail.com>",
   "license": "MIT",
   "private": false
