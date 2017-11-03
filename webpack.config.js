@@ -10,11 +10,11 @@ module.exports = {
   },
   resolve: {
     extensions: [".js", ".jsx", ".json"],
-    modules: [path.resolve(__dirname, "node_modules")]
+    modules: ["js", "node_modules"]
   },
-  resolveLoader: {
-    modules: [path.resolve(__dirname, "node_modules")]
-  },
+  // resolveLoader: {
+  //   modules: [path.resolve(__dirname, "node_modules")]
+  // },
   devServer: {
     publicPath: "/public/",
     historyApiFallback: true
@@ -37,11 +37,8 @@ module.exports = {
       },
       {
         test: /\.jsx?$/,
-        loader: "babel-loader",
-        query: {
-          presets: ["es2015"]
-        },
-        exclude: /node_modules/
+        exclude: /node_modules/,
+        loader: "babel-loader"
       }
     ]
   }
