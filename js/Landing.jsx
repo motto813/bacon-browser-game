@@ -2,11 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Landing = () => (
-  <div className="start-page">
-    <h1>Cold Bacon</h1>
-    <h3>
-      <Link to="/games">Start Game</Link>
-    </h3>
+  <div className="landing-page">
+    <h1 className="front-title">Cold Bacon</h1>
+    <Link to="/games">
+      <button className="start-button">Start</button>
+    </Link>
   </div>
 );
 

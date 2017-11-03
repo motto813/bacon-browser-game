@@ -12,7 +12,7 @@ const App = () => (
       <Switch>
         <Route exact path="/" component={Landing} />
         <Route
-          path="/games/new"
+          path="/games"
           component={props => {
             console.log(props);
             return <GameStart />;
