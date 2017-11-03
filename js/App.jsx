@@ -11,13 +11,7 @@ const App = () => (
     <div className="app">
       <Switch>
         <Route exact path="/" component={Landing} />
-        <Route
-          path="/games"
-          component={props => {
-            console.log(props);
-            return <GameStart />;
-          }}
-        />
+        <Route path="/games" component={() => <GameStart />} />
         <Route component={FourOhFour} />
       </Switch>
     </div>
