@@ -9,10 +9,11 @@ module.exports = {
     publicPath: "/public/"
   },
   resolve: {
-    extensions: [".js", ".jsx", ".json"]
+    extensions: [".js", ".jsx", ".json"],
+    modules: [path.resolve(__dirname, "node_modules")]
   },
   resolveLoader: {
-    root: path.resolve(__dirname, "node_modules")
+    modules: [path.resolve(__dirname, "node_modules")]
   },
   devServer: {
     publicPath: "/public/",
