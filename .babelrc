@@ -8,5 +8,8 @@
       "loose": false,
       "modules": false
     }]
+  ],
+  "plugins": [
+    "react-hot-loader/babel"
   ]
 }
