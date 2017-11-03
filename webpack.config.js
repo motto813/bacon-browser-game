@@ -27,6 +27,12 @@ module.exports = {
         loaders: ["style-loader", "css-loader"]
       },
       {
+        test: inputFile => process.env.NODE_ENV === "development" && /\.jsx?$/.test(inputFile),
+        enforce: "pre",
+        loader: "eslint-loader",
+        exclude: /node_modules/
+      },
+      {
         test: /\.jsx?$/,
         loader: "babel-loader"
       }
