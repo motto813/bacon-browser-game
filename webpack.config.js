@@ -23,10 +23,6 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.pug$/,
-        loaders: ["pug-loader?self"]
-      },
-      {
         test: /\.css$/,
         loaders: ["style-loader", "css-loader"]
       },
