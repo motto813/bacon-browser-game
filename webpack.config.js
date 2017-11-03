@@ -17,14 +17,14 @@ module.exports = {
   },
   module: {
     rules: [
-      // {
-      //   test: /\.pug$/,
-      //   loaders: ["pug-loader?self"]
-      // },
-      // {
-      //   test: /\.css$/,
-      //   loaders: ["style-loader", "css-loader"]
-      // },
+      {
+        test: /\.pug$/,
+        loaders: ["pug-loader?self"]
+      },
+      {
+        test: /\.css$/,
+        loaders: ["style-loader", "css-loader"]
+      },
       {
         enforce: "pre",
         test: /\.jsx?$/,
