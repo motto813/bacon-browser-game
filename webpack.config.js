@@ -30,12 +30,6 @@ const config = {
         loaders: ["style-loader", "css-loader"]
       },
       {
-        test: inputFile => process.env.NODE_ENV === "development" && /\.jsx?$/.test(inputFile),
-        enforce: "pre",
-        loader: "eslint-loader",
-        exclude: /node_modules/
-      },
-      {
         test: /\.jsx?$/,
         loader: "babel-loader"
       }
@@ -43,12 +37,18 @@ const config = {
   }
 };
 
-if (process.env.NODE_ENV === "development") {
+if (process.env.NODE_ENV !== "production") {
   config.entry.unshift(
     "react-hot-loader/patch",
     "webpack-dev-server/client?http://localhost:8080",
     "webpack/hot/only-dev-server"
   );
+  config.module.rules.unshift({
+    test: /\.jsx?$/,
+    enforce: "pre",
+    loader: "eslint-loader",
+    exclude: /node_modules/
+  });
 }
 
 module.exports = config;

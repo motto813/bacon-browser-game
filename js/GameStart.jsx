@@ -7,8 +7,11 @@ class GameStart extends Component {
     super(props);
 
     this.state = {
-      apiData: {}
+      apiData: {},
+      startGame: false
     };
+
+    this.handleStartGameClick = this.handleStartGameClick.bind(this);
   }
 
   componentDidMount() {
@@ -17,12 +20,15 @@ class GameStart extends Component {
       url: "/games"
     })
       .then(response => {
-        console.log(response.data);
         this.setState({ apiData: response.data });
       })
       .catch(error => {
         console.log(error);
       });
+  }
+
+  handleStartGameClick() {
+    this.setState({ startGame: true });
   }
 
   render() {
@@ -31,7 +37,11 @@ class GameStart extends Component {
 
     if (this.state.apiData.starting_actor) {
       startingActor = (
-        <GameActor name={this.state.apiData.starting_actor.name} image={this.state.apiData.starting_actor.image_url} />
+        <GameActor
+          clickHandler={this.handleStartGameClick}
+          name={this.state.apiData.starting_actor.name}
+          image={this.state.apiData.starting_actor.image_url}
+        />
       );
     } else {
       startingActor = <p>Loading...</p>;
@@ -44,6 +54,8 @@ class GameStart extends Component {
     } else {
       endingActor = <p>Loading...</p>;
     }
+
+    console.log(this.state.startGame);
 
     return (
       <div className="game-start">

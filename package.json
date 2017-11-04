@@ -4,7 +4,7 @@
     "format": "prettier --write --print-width=120 \"js/**/*{js,jsx}\"",
     "lint": "eslint **/*.{js,jsx} --quiet",
     "dev": "webpack-dev-server",
-    "postinstall": "webpack -p",
+    "postinstall": "NODE_ENV=production webpack -p",
     "start": "node server.js"
   },
   "engines": {
