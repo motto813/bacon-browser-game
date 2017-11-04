@@ -7,8 +7,11 @@ class GameStart extends Component {
     super(props);
 
     this.state = {
-      apiData: {},
-      startGame: false
+      gameLoaded: false,
+      gameId: 0,
+      startingActor: {},
+      endingActor: {},
+      gameStarted: false
     };
 
     this.handleStartGameClick = this.handleStartGameClick.bind(this);
@@ -20,7 +23,12 @@ class GameStart extends Component {
       url: "/games"
     })
       .then(response => {
-        this.setState({ apiData: response.data });
+        this.setState({
+          gameLoaded: true,
+          gameId: response.data.game_id,
+          startingActor: response.data.starting_actor,
+          endingActor: response.data.ending_actor
+        });
       })
       .catch(error => {
         console.log(error);
@@ -28,34 +36,48 @@ class GameStart extends Component {
   }
 
   handleStartGameClick() {
-    this.setState({ startGame: true });
+    this.setState({ gameStarted: true });
+    gameAPI({
+      method: "post",
+      url: `/games/${this.state.gameId}/paths`,
+      data: {
+        path: {
+          traceable_type: "Actor",
+          traceable_id: this.state.startingActor.id
+        }
+      }
+    })
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   render() {
     let startingActor;
     let endingActor;
 
-    if (this.state.apiData.starting_actor) {
+    if (this.state.gameLoaded) {
       startingActor = (
         <GameActor
           clickHandler={this.handleStartGameClick}
-          name={this.state.apiData.starting_actor.name}
-          image={this.state.apiData.starting_actor.image_url}
+          name={this.state.startingActor.name}
+          image={this.state.startingActor.image_url}
         />
       );
     } else {
       startingActor = <p>Loading...</p>;
     }
 
-    if (this.state.apiData.ending_actor) {
-      endingActor = (
-        <GameActor name={this.state.apiData.ending_actor.name} image={this.state.apiData.ending_actor.image_url} />
-      );
+    if (this.state.gameLoaded) {
+      endingActor = <GameActor name={this.state.endingActor.name} image={this.state.endingActor.image_url} />;
     } else {
       endingActor = <p>Loading...</p>;
     }
 
-    console.log(this.state.startGame);
+    console.log(this.state.gameStarted);
 
     return (
       <div className="game-start">
