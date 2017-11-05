@@ -1,23 +1,38 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-const GameActor = props => (
-  <div className="game-actor" onClick={props.clickHandler}>
-    <h3>{props.name}</h3>
-    <img src={`https://image.tmdb.org/t/p/w185/${props.image}`} alt={`${props.name}`} height="100" />
-  </div>
-);
+class GameActor extends Component {
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    this.props.clickEvent("Actor", this.props.actorId);
+  }
+
+  render() {
+    return (
+      <div className="game-actor" onClick={this.handleClick}>
+        <h3>{this.props.name}</h3>
+        <img src={`https://image.tmdb.org/t/p/w185/${this.props.image}`} alt={`${this.props.name}`} height="100" />
+      </div>
+    );
+  }
+}
 
 GameActor.propTypes = {
+  actorId: PropTypes.number,
   name: PropTypes.string,
   image: PropTypes.string,
-  clickHandler: PropTypes.func
+  clickEvent: PropTypes.func
 };
 
 GameActor.defaultProps = {
+  actorId: 0,
   name: "",
   image: "",
-  clickHandler: function noop() {}
+  clickEvent: function noop() {}
 };
 
 export default GameActor;
