@@ -14,7 +14,6 @@ class GameActor extends Component {
   render() {
     return (
       <div className="game-actor" onClick={this.handleClick}>
-        <h3>{this.props.name}</h3>
         <img src={`https://image.tmdb.org/t/p/w185/${this.props.image}`} alt={`${this.props.name}`} height="100" />
       </div>
     );

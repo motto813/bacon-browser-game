@@ -62,6 +62,8 @@ class GameStart extends Component {
   }
 
   render() {
+    let startingInfo;
+    let endingInfo;
     let startingActor;
     let endingActor;
     let gamePlay;
@@ -69,7 +71,6 @@ class GameStart extends Component {
     if (this.state.gameLoaded) {
       startingActor = (
         <div className="starting-actor">
-          <h3>Starting with</h3>
           <GameActor
             clickEvent={this.createPath}
             actorId={this.state.startingActor.id}
@@ -80,7 +81,6 @@ class GameStart extends Component {
       );
       endingActor = (
         <div className="ending-actor">
-          <h3>Find a path to</h3>
           <GameActor name={this.state.endingActor.name} image={this.state.endingActor.image_url} />
         </div>
       );
@@ -89,7 +89,20 @@ class GameStart extends Component {
       endingActor = <p>Loading...</p>;
     }
 
-    if (this.state.gameStarted) {
+    if (!this.state.gameStarted) {
+      startingInfo = (
+        <div className="starting-info">
+          <h3>Starting with</h3>
+          <h4>{this.state.startingActor.name}</h4>
+        </div>
+      );
+      endingInfo = (
+        <div className="ending-info">
+          <h3>Find a path to</h3>
+          <h4>{this.state.endingActor.name}</h4>
+        </div>
+      );
+    } else {
       gamePlay = (
         <ul>{this.state.possiblePaths.map(path => <li key={path.traceable.tmdb_id}>{path.traceable.name}</li>)}</ul>
       );
@@ -99,8 +112,10 @@ class GameStart extends Component {
 
     return (
       <div className="game-container">
+        {startingInfo}
         {startingActor}
         {gamePlay}
+        {endingInfo}
         {endingActor}
       </div>
     );
