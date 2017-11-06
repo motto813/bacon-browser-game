@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import gameAPI from "../gameAPI";
-import GameActor from "./components/GameActor";
+import GamePath from "./components/GamePath";
 
 class GameStart extends Component {
   constructor(props) {
@@ -25,11 +25,16 @@ class GameStart extends Component {
       url: "/games"
     })
       .then(response => {
+        console.log();
         this.setState({
           gameLoaded: true,
           gameId: response.data.game_id,
           startingActor: response.data.starting_actor,
-          endingActor: response.data.ending_actor
+          endingActor: response.data.ending_actor,
+          currentTraceable: {
+            traceable_type: "Actor",
+            traceable: response.data.starting_actor
+          }
         });
       })
       .catch(error => {
@@ -64,56 +69,73 @@ class GameStart extends Component {
   render() {
     let startingInfo;
     let endingInfo;
-    let startingActor;
+    let currentTraceable;
     let endingActor;
     let gamePlay;
 
     if (this.state.gameLoaded) {
-      startingActor = (
+      currentTraceable = (
         <div className="starting-actor">
-          <GameActor
+          <GamePath
             clickEvent={this.createPath}
-            actorId={this.state.startingActor.id}
-            name={this.state.startingActor.name}
-            image={this.state.startingActor.image_url}
+            traceableType={this.state.currentTraceable.traceable_type}
+            traceableId={this.state.currentTraceable.traceable.id}
+            name={this.state.currentTraceable.traceable.name}
+            image={this.state.currentTraceable.traceable.image_url}
           />
         </div>
       );
       endingActor = (
         <div className="ending-actor">
-          <GameActor name={this.state.endingActor.name} image={this.state.endingActor.image_url} />
+          <GamePath name={this.state.endingActor.name} image={this.state.endingActor.image_url} />
         </div>
       );
+      if (!this.state.gameStarted) {
+        startingInfo = (
+          <div className="starting-info">
+            <h3>Starting with</h3>
+            <h4>{this.state.currentTraceable.traceable.name}</h4>
+          </div>
+        );
+        endingInfo = (
+          <div className="ending-info">
+            <h3>Find a path to</h3>
+            <h4>{this.state.endingActor.name}</h4>
+          </div>
+        );
+      } else {
+        gamePlay = (
+          <table id="possible-paths">
+            <tbody>
+              <tr>
+                {this.state.possiblePaths.map(path => (
+                  <td key={path.traceable.tmdb_id}>
+                    <GamePath
+                      clickEvent={this.createPath}
+                      traceableType={path.traceable_type}
+                      traceableId={path.traceable.id}
+                      name={path.traceable.name}
+                      image={path.traceable.image_url}
+                    />
+                  </td>
+                ))}
+              </tr>
+            </tbody>
+          </table>
+        );
+      }
     } else {
-      startingActor = <p>Loading...</p>;
+      currentTraceable = <p>Loading...</p>;
       endingActor = <p>Loading...</p>;
     }
 
-    if (!this.state.gameStarted) {
-      startingInfo = (
-        <div className="starting-info">
-          <h3>Starting with</h3>
-          <h4>{this.state.startingActor.name}</h4>
-        </div>
-      );
-      endingInfo = (
-        <div className="ending-info">
-          <h3>Find a path to</h3>
-          <h4>{this.state.endingActor.name}</h4>
-        </div>
-      );
-    } else {
-      gamePlay = (
-        <ul>{this.state.possiblePaths.map(path => <li key={path.traceable.tmdb_id}>{path.traceable.name}</li>)}</ul>
-      );
-    }
-
     console.log(this.state.currentTraceable);
+    console.log(this.state.startingActor);
 
     return (
       <div className="game-container">
         {startingInfo}
-        {startingActor}
+        {currentTraceable}
         {gamePlay}
         {endingInfo}
         {endingActor}

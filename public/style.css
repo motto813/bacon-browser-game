@@ -65,3 +65,11 @@ html {
   color: white;
   font-size: 1.8em;
 }
+
+#possible-paths {
+  display: block;
+}
+
+#possible-paths td {
+  display: inline-block;
+}
