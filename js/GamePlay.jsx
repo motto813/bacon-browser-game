@@ -81,8 +81,22 @@ class GameStart extends Component {
     let currentTraceable;
     let gamePlay;
 
-    if (!this.state.loading) {
-      if (!this.state.gameStarted) {
+    if (!this.state.gameStarted) {
+      if (this.state.loading) {
+        startingActor = (
+          <div className="traceable-large">
+            <Spinner />
+          </div>
+        );
+        endingActor = (
+          <div className="traceable-large">
+            <Spinner />
+          </div>
+        );
+      } else {
+        // *********************************************************
+        // Game Starting View
+        // *********************************************************
         startingInfo = (
           <div className="starting-info info-text">
             <h2>Starting with</h2>
@@ -108,35 +122,11 @@ class GameStart extends Component {
         endingActor = (
           <Traceable isCurrent name={this.state.endingActor.name} image={this.state.endingActor.image_url} />
         );
-      } else {
-        currentTraceable = (
-          <Traceable
-            isCurrent
-            name={this.state.currentTraceable.traceable.name}
-            image={this.state.currentTraceable.traceable.image_url}
-          />
-        );
-        endingActor = (
-          <Traceable isCurrent name={this.state.endingActor.name} image={this.state.endingActor.image_url} />
-        );
-        gamePlay = (
-          <div id="paths-container">
-            {this.state.possiblePaths.map(path => (
-              <div className="possible-path" key={path.traceable.tmdb_id}>
-                <GamePath
-                  clickEvent={this.createPath}
-                  traceableType={path.traceable_type}
-                  traceableId={path.traceable.id}
-                  name={path.traceable.name}
-                  image={path.traceable.image_url}
-                />
-              </div>
-            ))}
-          </div>
-        );
       }
-    } else {
-      startingActor = (
+    } else if (this.state.loading) {
+      const pathCount = 8;
+
+      currentTraceable = (
         <div className="traceable-large">
           <Spinner />
         </div>
@@ -146,19 +136,54 @@ class GameStart extends Component {
           <Spinner />
         </div>
       );
+      gamePlay = (
+        <div id="paths-container">
+          {[...Array(pathCount)].map((element, index) => (
+            <div className="possible-path traceable-small" key={index}>
+              <Spinner />
+            </div>
+          ))}
+        </div>
+      );
+    } else {
+      // *********************************************************
+      // Game In Progress View
+      // *********************************************************
+      currentTraceable = (
+        <Traceable
+          isCurrent
+          name={this.state.currentTraceable.traceable.name}
+          image={this.state.currentTraceable.traceable.image_url}
+        />
+      );
+      endingActor = <Traceable isCurrent name={this.state.endingActor.name} image={this.state.endingActor.image_url} />;
+      gamePlay = (
+        <div id="paths-container">
+          {this.state.possiblePaths.map(path => (
+            <div className="possible-path" key={path.traceable.tmdb_id}>
+              <GamePath
+                clickEvent={this.createPath}
+                traceableType={path.traceable_type}
+                traceableId={path.traceable.id}
+                name={path.traceable.name}
+                image={path.traceable.image_url}
+              />
+            </div>
+          ))}
+        </div>
+      );
     }
 
     return (
       <div className="game-container">
-        <div className="starter-path starting">
-          <div className="starting-info info-text">{startingInfo}</div>
+        <div className="current-path starting">
           {startingActor}
+          {startingInfo}
+          {currentTraceable}
         </div>
-        <div className="current-path starting">{currentTraceable}</div>
         {gamePlay}
-        <div className="current-path ending">{endingActor}</div>
-        <div className="starter-path ending">
-          <div className="ending-info info-text">{endingInfo}</div>
+        <div className="current-path ending">
+          {endingInfo}
           {endingActor}
         </div>
       </div>
