@@ -16,7 +16,7 @@ class GamePath extends Component {
 
   render() {
     return (
-      <div className="new-path" onClick={this.handleClick}>
+      <div className="possible-path" onClick={this.handleClick}>
         {this.props.children}
         <Traceable name={this.props.name} image={this.props.image} isCurrent={this.props.isCurrent} />
       </div>

@@ -1,12 +1,14 @@
 import React, { Component } from "react";
+import { Switch, Route } from "react-router-dom";
 import gameAPI from "../gameAPI";
+import PossiblePaths from "./PossiblePaths";
 import GamePath from "./components/GamePath";
 import Traceable from "./components/Traceable";
 import Spinner from "./components/Spinner";
 
 require("../public/style.css");
 
-class GameStart extends Component {
+class GamePlay extends Component {
   constructor(props) {
     super(props);
 
@@ -151,33 +153,39 @@ class GameStart extends Component {
       );
       endingActor = <Traceable isCurrent name={this.state.endingActor.name} image={this.state.endingActor.image_url} />;
       gamePlay = (
-        <div id="paths-container">
-          {this.state.possiblePaths.map(path => (
-            <div className="possible-path" key={path.traceable.tmdb_id}>
-              <GamePath
-                clickEvent={this.createPath}
-                traceableType={path.traceable_type}
-                traceableId={path.traceable.id}
-                name={path.traceable.name}
-                image={path.traceable.image_url}
-              />
-            </div>
-          ))}
-        </div>
+        <PossiblePaths
+          createPath={this.createPath}
+          possiblePaths={this.state.possiblePaths}
+          gameId={this.state.gameId}
+          endingActorId={this.state.endingActor.id}
+        />
       );
     }
 
     return (
-      <div className="game-container">
-        <div className="current-path starting">
-          {startingActor}
-          {currentTraceable}
-        </div>
-        {gamePlay}
-        <div className="current-path ending">{endingActor}</div>
-      </div>
+      <Switch>
+        <Route
+          exact
+          path="/games/:id/paths"
+          component={() =>
+            this.state.possiblePaths.map(path => <h3 key={path.traceable.tmdb_id}>{path.traceable.name}</h3>)}
+        />
+        <Route
+          path="/games"
+          component={() => (
+            <div className="game-container">
+              <div className="current-path starting">
+                {startingActor}
+                {currentTraceable}
+              </div>
+              {gamePlay}
+              <div className="current-path ending">{endingActor}</div>
+            </div>
+          )}
+        />
+      </Switch>
     );
   }
 }
 
-export default GameStart;
+export default GamePlay;
