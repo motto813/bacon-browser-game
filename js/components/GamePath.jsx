@@ -17,6 +17,7 @@ class GamePath extends Component {
   render() {
     return (
       <div className="new-path" onClick={this.handleClick}>
+        {this.props.children}
         <Traceable name={this.props.name} image={this.props.image} isCurrent={this.props.isCurrent} />
       </div>
     );
@@ -29,7 +30,8 @@ GamePath.propTypes = {
   name: PropTypes.string,
   image: PropTypes.string,
   isCurrent: PropTypes.bool,
-  clickEvent: PropTypes.func
+  clickEvent: PropTypes.func,
+  children: PropTypes.node
 };
 
 GamePath.defaultProps = {
@@ -38,7 +40,8 @@ GamePath.defaultProps = {
   name: "",
   image: "",
   isCurrent: false,
-  clickEvent: function noop() {}
+  clickEvent: function noop() {},
+  children: ""
 };
 
 export default GamePath;

@@ -62,6 +62,7 @@ class GameStart extends Component {
       }
     })
       .then(response => {
+        console.log(response.data);
         this.setState({
           loading: false,
           currentTraceable: response.data.current_traceable,
@@ -74,9 +75,7 @@ class GameStart extends Component {
   }
 
   render() {
-    let startingInfo;
     let startingActor;
-    let endingInfo;
     let endingActor;
     let currentTraceable;
     let gamePlay;
@@ -97,12 +96,6 @@ class GameStart extends Component {
         // *********************************************************
         // Game Starting View
         // *********************************************************
-        startingInfo = (
-          <div className="starting-info info-text">
-            <h2>Starting with</h2>
-            <h3>{this.state.currentTraceable.traceable.name}</h3>
-          </div>
-        );
         startingActor = (
           <GamePath
             isCurrent
@@ -111,16 +104,20 @@ class GameStart extends Component {
             traceableId={this.state.startingActor.id}
             name={this.state.startingActor.name}
             image={this.state.startingActor.image_url}
-          />
-        );
-        endingInfo = (
-          <div className="ending-info info-text">
-            <h2>Find a path to</h2>
-            <h3>{this.state.endingActor.name}</h3>
-          </div>
+          >
+            <div className="starting-info info-text">
+              <h2>Starting with</h2>
+              <h3>{this.state.currentTraceable.traceable.name}</h3>
+            </div>
+          </GamePath>
         );
         endingActor = (
-          <Traceable isCurrent name={this.state.endingActor.name} image={this.state.endingActor.image_url} />
+          <Traceable isCurrent name={this.state.endingActor.name} image={this.state.endingActor.image_url}>
+            <div className="ending-info info-text">
+              <h2>Find a path to</h2>
+              <h3>{this.state.endingActor.name}</h3>
+            </div>
+          </Traceable>
         );
       }
     } else if (this.state.loading) {
@@ -131,11 +128,7 @@ class GameStart extends Component {
           <Spinner />
         </div>
       );
-      endingActor = (
-        <div className="traceable-large">
-          <Spinner />
-        </div>
-      );
+      endingActor = <Traceable isCurrent name={this.state.endingActor.name} image={this.state.endingActor.image_url} />;
       gamePlay = (
         <div id="paths-container">
           {[...Array(pathCount)].map((element, index) => (
@@ -178,14 +171,10 @@ class GameStart extends Component {
       <div className="game-container">
         <div className="current-path starting">
           {startingActor}
-          {startingInfo}
           {currentTraceable}
         </div>
         {gamePlay}
-        <div className="current-path ending">
-          {endingInfo}
-          {endingActor}
-        </div>
+        <div className="current-path ending">{endingActor}</div>
       </div>
     );
   }
