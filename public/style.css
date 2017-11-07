@@ -7,7 +7,8 @@ html {
   font-family: "Shrikhand", cursive;
 }
 
-.app {
+.app,
+.game-container {
   position: relative;
   width: 100%;
   height: 100vh;
@@ -42,7 +43,6 @@ html {
   right: 0;
   margin: 0 auto;
   top: 10%;
-  /*font-family: "Shrikhand", cursive;*/
   font-weight: bold;
   color: white;
   text-shadow: -4px 0 black, 0 4px black, 2px 0 black, 0 -2px black;
@@ -66,10 +66,57 @@ html {
   font-size: 1.8em;
 }
 
-#possible-paths {
-  display: block;
+.game-container {
+  background-color: #70caff;
+  height: 100vh;
+  width: 100%;
 }
 
-#possible-paths td {
-  display: inline-block;
+.starter-path,
+.current-path {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+}
+
+.starter-path.starting {
+  top: 0;
+  height: 40%;
+}
+
+.starter-path.ending {
+  bottom: 5%;
+}
+
+.current-path.starting {
+  top: 4%;
+}
+
+.current-path.ending {
+  bottom: 4%;
+}
+
+.traceable > img {
+  border-radius: 15px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.traceable-small > img {
+  height: 100px;
+}
+
+.traceable-large > img {
+  height: 170px;
+}
+
+#paths-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+#paths-container > .possible-path {
+  margin: 8px;
 }

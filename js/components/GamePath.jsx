@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Traceable from "./Traceable";
+
+require("../../public/style.css");
 
 class GamePath extends Component {
   constructor(props) {
@@ -13,8 +16,8 @@ class GamePath extends Component {
 
   render() {
     return (
-      <div className="game-actor" onClick={this.handleClick}>
-        <img src={`https://image.tmdb.org/t/p/w185/${this.props.image}`} alt={`${this.props.name}`} height="100" />
+      <div className="new-path" onClick={this.handleClick}>
+        <Traceable name={this.props.name} image={this.props.image} isCurrent={this.props.isCurrent} />
       </div>
     );
   }
@@ -25,6 +28,7 @@ GamePath.propTypes = {
   traceableId: PropTypes.number,
   name: PropTypes.string,
   image: PropTypes.string,
+  isCurrent: PropTypes.bool,
   clickEvent: PropTypes.func
 };
 
@@ -33,6 +37,7 @@ GamePath.defaultProps = {
   traceableId: 0,
   name: "",
   image: "",
+  isCurrent: false,
   clickEvent: function noop() {}
 };
 
