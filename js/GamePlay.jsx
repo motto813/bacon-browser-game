@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { Switch, Route } from "react-router-dom";
 import gameAPI from "../gameAPI";
-import PossiblePaths from "./PossiblePaths";
-import GamePath from "./components/GamePath";
+import PossiblePath from "./components/PossiblePath";
 import Traceable from "./components/Traceable";
 import Spinner from "./components/Spinner";
 
@@ -13,8 +12,6 @@ class GamePlay extends Component {
     super(props);
 
     this.state = {
-      loading: true,
-      // gameLoaded: false,
       gameId: 0,
       startingActor: {},
       endingActor: {},
@@ -23,7 +20,7 @@ class GamePlay extends Component {
       possiblePaths: []
     };
 
-    this.createPath = this.createPath.bind(this);
+    this.choosePath = this.choosePath.bind(this);
   }
 
   componentDidMount() {
@@ -33,8 +30,6 @@ class GamePlay extends Component {
     })
       .then(response => {
         this.setState({
-          // gameLoaded: true,
-          loading: false,
           gameId: response.data.game_id,
           startingActor: response.data.starting_actor,
           endingActor: response.data.ending_actor,
@@ -49,9 +44,14 @@ class GamePlay extends Component {
       });
   }
 
-  createPath(traceableType, traceableId) {
-    if (!this.state.gameStarted) this.setState({ loading: true, gameStarted: true });
-    else this.setState({ loading: true });
+  choosePath(traceableType, traceableId) {
+    if (!this.state.gameStarted) this.setState({ gameStarted: true });
+
+    // IF the traceableType and ID match the endingActor
+    //
+    // ELSE
+
+    // set the currentTraceable to the startingActor OR matching traceable in possible paths
 
     gameAPI({
       method: "post",
@@ -66,7 +66,6 @@ class GamePlay extends Component {
       .then(response => {
         console.log(response.data);
         this.setState({
-          loading: false,
           currentTraceable: response.data.current_traceable,
           possiblePaths: response.data.possible_paths
         });
@@ -77,33 +76,25 @@ class GamePlay extends Component {
   }
 
   render() {
+    const pathCount = 8;
+
     let startingActor;
     let endingActor;
     let currentTraceable;
-    let gamePlay;
+    let possiblePaths;
 
     if (!this.state.gameStarted) {
-      if (this.state.loading) {
-        startingActor = (
-          <div className="traceable-large">
-            <Spinner />
-          </div>
-        );
-        endingActor = (
-          <div className="traceable-large">
-            <Spinner />
-          </div>
-        );
-      } else {
+      if (this.state.startingActor.id) {
         // *********************************************************
         // Game Starting View
         // *********************************************************
         startingActor = (
-          <GamePath
+          <PossiblePath
             isCurrent
-            clickEvent={this.createPath}
+            choosePath={this.choosePath}
             traceableType="Actor"
             traceableId={this.state.startingActor.id}
+            endingId={this.state.endingActor.id}
             name={this.state.startingActor.name}
             image={this.state.startingActor.image_url}
           >
@@ -111,8 +102,16 @@ class GamePlay extends Component {
               <h2>Starting with</h2>
               <h3>{this.state.currentTraceable.traceable.name}</h3>
             </div>
-          </GamePath>
+          </PossiblePath>
         );
+      } else {
+        startingActor = (
+          <Traceable isCurrent>
+            <Spinner />
+          </Traceable>
+        );
+      }
+      if (this.state.endingActor.id) {
         endingActor = (
           <Traceable isCurrent name={this.state.endingActor.name} image={this.state.endingActor.image_url}>
             <div className="ending-info info-text">
@@ -121,45 +120,62 @@ class GamePlay extends Component {
             </div>
           </Traceable>
         );
+      } else {
+        endingActor = (
+          <Traceable isCurrent>
+            <Spinner />
+          </Traceable>
+        );
       }
-    } else if (this.state.loading) {
-      const pathCount = 8;
-
-      currentTraceable = (
-        <div className="traceable-large">
-          <Spinner />
-        </div>
-      );
-      endingActor = <Traceable isCurrent name={this.state.endingActor.name} image={this.state.endingActor.image_url} />;
-      gamePlay = (
-        <div id="paths-container">
-          {[...Array(pathCount)].map((element, index) => (
-            <div className="possible-path traceable-small" key={index}>
-              <Spinner />
-            </div>
-          ))}
-        </div>
-      );
     } else {
       // *********************************************************
       // Game In Progress View
       // *********************************************************
-      currentTraceable = (
-        <Traceable
-          isCurrent
-          name={this.state.currentTraceable.traceable.name}
-          image={this.state.currentTraceable.traceable.image_url}
-        />
-      );
-      endingActor = <Traceable isCurrent name={this.state.endingActor.name} image={this.state.endingActor.image_url} />;
-      gamePlay = (
-        <PossiblePaths
-          createPath={this.createPath}
-          possiblePaths={this.state.possiblePaths}
-          gameId={this.state.gameId}
-          endingActorId={this.state.endingActor.id}
-        />
-      );
+      if (this.state.currentTraceable.traceable.id) {
+        currentTraceable = (
+          <Traceable
+            isCurrent
+            name={this.state.currentTraceable.traceable.name}
+            image={this.state.currentTraceable.traceable.image_url}
+          />
+        );
+      } else {
+        currentTraceable = (
+          <Traceable isCurrent>
+            <Spinner />
+          </Traceable>
+        );
+      }
+      if (this.state.endingActor.id) {
+        endingActor = (
+          <Traceable isCurrent name={this.state.endingActor.name} image={this.state.endingActor.image_url} />
+        );
+      } else {
+        endingActor = (
+          <Traceable isCurrent>
+            <Spinner />
+          </Traceable>
+        );
+      }
+      if (this.state.possiblePaths.length !== 0) {
+        possiblePaths = this.state.possiblePaths.map(path => (
+          <PossiblePath
+            key={path.traceable.tmdb_id}
+            choosePath={this.choosePath}
+            traceableType={path.traceable_type}
+            traceableId={path.traceable.id}
+            endingId={this.state.endingActor.id}
+            name={path.traceable.name}
+            image={path.traceable.image_url}
+          />
+        ));
+      } else {
+        possiblePaths = [...Array(pathCount)].map((element, index) => (
+          <PossiblePath key={index}>
+            <Spinner />
+          </PossiblePath>
+        ));
+      }
     }
 
     return (
@@ -178,7 +194,7 @@ class GamePlay extends Component {
                 {startingActor}
                 {currentTraceable}
               </div>
-              {gamePlay}
+              <div className="paths-container">{possiblePaths}</div>
               <div className="current-path ending">{endingActor}</div>
             </div>
           )}

@@ -14,6 +14,10 @@ const Image = styled.img`
   animation: ${spin} 4s infinite linear;
 `;
 
-const Spinner = () => <Image src="/public/img/loading.png" alt="loading indicator" />;
+const Spinner = () => (
+  <div className="loading">
+    <Image src="/public/img/loading.png" alt="loading indicator" />
+  </div>
+);
 
 export default Spinner;

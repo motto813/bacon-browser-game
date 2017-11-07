@@ -4,7 +4,10 @@ import PropTypes from "prop-types";
 require("../../public/style.css");
 
 const Traceable = props => {
+  let image;
   let imageSize;
+
+  if (props.image) image = <img src={`https://image.tmdb.org/t/p/w185/${props.image}`} alt={`${props.name}`} />;
 
   if (props.isCurrent) imageSize = "large";
   else imageSize = "small";
@@ -12,7 +15,7 @@ const Traceable = props => {
   return (
     <div className={`traceable traceable-${imageSize} traceable-${props.type.toLowerCase()}`}>
       {props.children}
-      <img src={`https://image.tmdb.org/t/p/w185/${props.image}`} alt={`${props.name}`} />
+      {image}
     </div>
   );
 };

@@ -66,12 +66,6 @@ html {
   font-size: 1.8em;
 }
 
-.game-container {
-  /*background-color: #70caff;*/
-  height: 100vh;
-  width: 100%;
-}
-
 .current-path {
   position: absolute;
   left: 0;
@@ -92,21 +86,29 @@ html {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.traceable-small > img {
-  height: 100px;
-}
-
 .traceable-large > img {
   height: 170px;
 }
 
-#paths-container {
+.traceable-large > .loading > img {
+  height: 170px;
+}
+
+.traceable-small > img {
+  height: 100px;
+}
+
+.traceable-small > .loading > img {
+  height: 70px;
+}
+
+.paths-container {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
 }
 
-#paths-container > .possible-path {
+.paths-container > .possible-path {
   margin: 8px;
 }
