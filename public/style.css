@@ -7,7 +7,7 @@ html {
   font-family: "Shrikhand", cursive;
 }
 
-.app,
+.landing-container,
 .game-container {
   position: relative;
   width: 100%;
@@ -18,12 +18,7 @@ html {
   text-align: center;
 }
 
-.landing-page {
-  height: 100%;
-  width: 100%;
-}
-
-.landing-page:after {
+.landing-container:after {
   content: "";
   display: block;
   position: absolute;
@@ -58,6 +53,19 @@ html {
   bottom: 10%;
   width: 95%;
   height: 70px;
+  border: none;
+  border-radius: 6px;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  font-family: "Shrikhand", cursive;
+  color: white;
+  font-size: 1.8em;
+}
+
+.restart-button {
+  background-color: black;
+  margin: 20px auto;
+  width: 95%;
+  height: 50px;
   border: none;
   border-radius: 6px;
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -111,4 +119,37 @@ html {
 
 .paths-container > .possible-path {
   margin: 8px;
+}
+
+.winning-path > .traceable > img {
+  border: solid #00ff1d 5px;
+}
+
+.results-container {
+  position: relative;
+  width: 100%;
+  text-align: center;
+}
+
+.synopsis {
+  position: relative;
+  margin-top: 4%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.synopsis > div {
+  margin: 8px;
+}
+
+.degrees-count {
+  width: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.degrees-count > h1 {
+  font-size: 3em;
 }

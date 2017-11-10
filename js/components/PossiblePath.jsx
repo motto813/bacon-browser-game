@@ -12,7 +12,7 @@ class PossiblePath extends Component {
   }
 
   handleClick() {
-    this.props.choosePath(this.props.traceableType, this.props.traceableId);
+    this.props.clickEvent(this.props.traceableType, this.props.traceableId);
   }
 
   render() {
@@ -41,7 +41,7 @@ PossiblePath.propTypes = {
   name: PropTypes.string,
   image: PropTypes.string,
   isCurrent: PropTypes.bool,
-  choosePath: PropTypes.func,
+  clickEvent: PropTypes.func,
   children: PropTypes.node
 };
 
@@ -52,7 +52,7 @@ PossiblePath.defaultProps = {
   name: "",
   image: "",
   isCurrent: false,
-  choosePath: function noop() {},
+  clickEvent: function noop() {},
   children: ""
 };
 
