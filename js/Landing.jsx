@@ -1,6 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+  require("../public/style.css");
+}
+
 const Landing = () => (
   <div className="landing-container">
     <h1 className="front-title">Cold Bacon</h1>

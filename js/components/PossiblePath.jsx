@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Traceable from "./Traceable";
 
-require("../../public/style.css");
+if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+  require("../../public/style.css");
+}
 
 class PossiblePath extends Component {
   constructor(props) {

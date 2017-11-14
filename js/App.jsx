@@ -3,6 +3,10 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Landing from "./Landing";
 import GamePlay from "./GamePlay";
 
+if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+  require("../public/style.css");
+}
+
 const FourOhFour = () => <h1>404</h1>;
 
 const App = () => (

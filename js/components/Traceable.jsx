@@ -1,7 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-require("../../public/style.css");
+if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+  require("../../public/style.css");
+}
 
 const Traceable = props => {
   let image;

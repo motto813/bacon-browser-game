@@ -5,7 +5,9 @@ import PossiblePath from "./components/PossiblePath";
 import Traceable from "./components/Traceable";
 import Spinner from "./components/Spinner";
 
-require("../public/style.css");
+if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+  require("../public/style.css");
+}
 
 const gameModes = {
   start: "start",
