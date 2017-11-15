@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import Spinner from "./Spinner";
 
 if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
   require("../../public/style.css");
@@ -10,6 +11,7 @@ const Traceable = props => {
   let imageSize;
 
   if (props.image) image = <img src={`https://image.tmdb.org/t/p/w185/${props.image}`} alt={`${props.name}`} />;
+  else image = <Spinner />;
 
   if (props.isCurrent) imageSize = "large";
   else imageSize = "small";

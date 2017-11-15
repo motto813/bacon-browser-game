@@ -20,7 +20,7 @@ class PossiblePath extends Component {
   render() {
     let pathClass;
 
-    if (this.props.traceableType === "Actor" && this.props.traceableId === this.props.endingId) {
+    if (this.props.traceableType === "Actor" && this.props.traceableId === this.props.targetId) {
       pathClass = "possible-path winning-path";
     } else {
       pathClass = "possible-path";
@@ -44,7 +44,7 @@ class PossiblePath extends Component {
 PossiblePath.propTypes = {
   traceableType: PropTypes.string,
   traceableId: PropTypes.number,
-  endingId: PropTypes.number,
+  targetId: PropTypes.number,
   name: PropTypes.string,
   image: PropTypes.string,
   isCurrent: PropTypes.bool,
@@ -55,7 +55,7 @@ PossiblePath.propTypes = {
 PossiblePath.defaultProps = {
   traceableType: "Actor",
   traceableId: 0,
-  endingId: 0,
+  targetId: 0,
   name: "",
   image: "",
   isCurrent: false,

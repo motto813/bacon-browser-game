@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import gameAPI from "../gameAPI";
+import GameStart from "./containers/GameStart";
 import PossiblePath from "./components/PossiblePath";
 import Traceable from "./components/Traceable";
 import Spinner from "./components/Spinner";
@@ -121,57 +122,21 @@ class GamePlay extends Component {
     const pathCount = defaultPathCount;
 
     if (this.state.mode === gameModes.start) {
-      // *********************************************************
-      // Game Starting View
-      // *********************************************************
-      let startingActor;
-      let endingActor;
-
-      if (this.state.startingActor.id) {
-        startingActor = (
-          <PossiblePath
-            isCurrent
-            clickEvent={this.choosePath}
-            traceableType="Actor"
-            traceableId={this.state.startingActor.id}
-            endingId={this.state.endingActor.id}
-            name={this.state.startingActor.name}
-            image={this.state.startingActor.image_url}
-          >
-            <div className="starting-info info-text">
-              <h2>Starting with</h2>
-              <h3>{this.state.currentTraceable.traceable.name}</h3>
-            </div>
-          </PossiblePath>
-        );
-      } else {
-        startingActor = (
-          <Traceable isCurrent>
-            <Spinner />
-          </Traceable>
-        );
-      }
-      if (this.state.endingActor.id) {
-        endingActor = (
-          <Traceable isCurrent name={this.state.endingActor.name} image={this.state.endingActor.image_url}>
-            <div className="ending-info info-text">
-              <h2>Find a path to</h2>
-              <h3>{this.state.endingActor.name}</h3>
-            </div>
-          </Traceable>
-        );
-      } else {
-        endingActor = (
-          <Traceable isCurrent>
-            <Spinner />
-          </Traceable>
-        );
-      }
       return (
-        <div className="game-container">
-          <div className="current-path starting">{startingActor}</div>
-          <div className="current-path ending">{endingActor}</div>
-        </div>
+        <GameStart
+          startingActor={{
+            type: "Actor",
+            id: this.state.startingActor.id,
+            name: this.state.startingActor.name,
+            imageURL: this.state.startingActor.image_url
+          }}
+          endingActor={{
+            id: this.state.endingActor.id,
+            name: this.state.endingActor.name,
+            imageURL: this.state.endingActor.image_url
+          }}
+          choosePath={this.choosePath}
+        />
       );
     } else if (this.state.mode === gameModes.listPaths) {
       // *********************************************************
@@ -214,7 +179,7 @@ class GamePlay extends Component {
             clickEvent={this.setCurrentPath}
             traceableType={path.traceable_type}
             traceableId={path.traceable.id}
-            endingId={this.state.endingActor.id}
+            targetId={this.state.endingActor.id}
             name={path.traceable.name}
             image={path.traceable.image_url}
           />
@@ -263,7 +228,7 @@ class GamePlay extends Component {
             clickEvent={this.choosePath}
             traceableType={this.state.currentPath.traceable_type}
             traceableId={this.state.currentPath.traceable.id}
-            endingId={this.state.endingActor.id}
+            targetId={this.state.endingActor.id}
             name={this.state.currentPath.traceable.name}
             image={this.state.currentPath.traceable.image_url}
           >
