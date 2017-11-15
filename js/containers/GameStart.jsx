@@ -2,31 +2,30 @@ import React from "react";
 import PropTypes from "prop-types";
 import PossiblePath from "../components/PossiblePath";
 import Traceable from "../components/Traceable";
-// import Spinner from "../components/Spinner";
 
 const GameStart = props => {
   let startingName;
   let startingImage;
   let endingName;
 
-  if (props.startingActor.id) {
-    startingName = <h3>{props.startingActor.name}</h3>;
+  if (props.startingTraceable.id) {
+    startingName = <h3>{props.startingTraceable.name}</h3>;
     startingImage = (
       <PossiblePath
         isCurrent
         clickEvent={props.choosePath}
-        traceableType={props.startingActor.type}
-        traceableId={props.startingActor.id}
-        targetId={props.endingActor.id}
-        name={props.startingActor.name}
-        image={props.startingActor.imageURL}
+        traceableType={props.startingTraceable.type}
+        traceableId={props.startingTraceable.id}
+        targetId={props.endingTraceable.id}
+        name={props.startingTraceable.name}
+        image={props.startingTraceable.imageURL}
       />
     );
   } else {
     startingImage = <Traceable isCurrent />;
   }
-  if (props.endingActor.id) {
-    endingName = <h3>{props.endingActor.name}</h3>;
+  if (props.endingTraceable.id) {
+    endingName = <h3>{props.endingTraceable.name}</h3>;
   }
 
   return (
@@ -43,20 +42,20 @@ const GameStart = props => {
           <h2>Find a path to</h2>
           {endingName}
         </div>
-        <Traceable isCurrent name={props.endingActor.name} image={props.endingActor.imageURL} />
+        <Traceable isCurrent name={props.endingTraceable.name} image={props.endingTraceable.imageURL} />
       </div>
     </div>
   );
 };
 
 GameStart.propTypes = {
-  startingActor: PropTypes.shape({
+  startingTraceable: PropTypes.shape({
     type: PropTypes.string,
     id: PropTypes.number,
     name: PropTypes.string,
     imageURL: PropTypes.string
   }),
-  endingActor: PropTypes.shape({
+  endingTraceable: PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string,
     imageURL: PropTypes.string
@@ -65,8 +64,8 @@ GameStart.propTypes = {
 };
 
 GameStart.defaultProps = {
-  startingActor: {},
-  endingActor: {},
+  startingTraceable: {},
+  endingTraceable: {},
   choosePath: function noop() {}
 };
 

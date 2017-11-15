@@ -123,6 +123,12 @@ html {
   margin: 8px;
 }
 
+.current-clickables {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .winning-path > .traceable > img {
   border: solid #00ff1d 5px;
 }
