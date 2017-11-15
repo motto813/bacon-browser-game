@@ -31,7 +31,6 @@ class GamePlay extends Component {
       currentTraceable: {},
       possiblePaths: [],
       pathsChosen: [],
-      pathsCount: 0,
       degreesCount: 0,
       winner: false
     };
@@ -41,9 +40,16 @@ class GamePlay extends Component {
   }
 
   componentDidMount() {
+    let gameURL;
+
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+      gameURL = "/create_demo/1245/9273";
+    } else {
+      gameURL = "/games";
+    }
     gameAPI({
       method: "post",
-      url: "/games"
+      url: gameURL
     })
       .then(response => {
         this.setState({
@@ -86,16 +92,22 @@ class GamePlay extends Component {
       .then(response => {
         console.log(response.data);
         if (response.data.game_is_finished) {
-          this.setState({
+          this.setState(prevState => ({
             mode: gameModes.results,
-            pathsChosen: response.data.paths_chosen,
+            pathsChosen: prevState.pathsChosen.concat({
+              traceableType: this.state.currentPath.traceable_type,
+              traceable: this.state.currentPath.traceable
+            }),
             winner: true
-          });
+          }));
         } else {
           this.setState(prevState => ({
             currentTraceable: response.data.current_traceable,
             possiblePaths: response.data.possible_paths,
-            pathsCount: prevState.pathsCount + 1,
+            pathsChosen: prevState.pathsChosen.concat({
+              traceableType: response.data.current_traceable.traceable_type,
+              traceable: response.data.current_traceable.traceable
+            }),
             degreesCount: traceableType === "Movie" ? prevState.degreesCount + 1 : prevState.degreesCount
           }));
         }
@@ -311,10 +323,15 @@ class GamePlay extends Component {
       }
       if (this.state.pathsChosen.length !== 0) {
         pathsChosen = this.state.pathsChosen.map(path => (
-          <Traceable key={path.tmdb_id} name={path.name} image={path.image_url} />
+          <Traceable
+            key={path.traceable.tmdb_id}
+            type={path.traceableType}
+            name={path.traceable.name}
+            image={path.traceable.image_url}
+          />
         ));
       } else {
-        pathsChosen = [...Array(this.state.pathsCount)].map((element, index) => (
+        pathsChosen = [...Array(this.state.pathsChosen.length)].map((element, index) => (
           <PossiblePath key={index}>
             <Spinner />
           </PossiblePath>

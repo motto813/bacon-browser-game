@@ -5,6 +5,8 @@
 html {
   /*font-family: Helvetica Neue, Helvetica, sans-serif;*/
   font-family: "Shrikhand", cursive;
+  background-color: white;
+  color: black;
 }
 
 .landing-container,
@@ -137,10 +139,12 @@ html {
   width: 100%;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .synopsis > div {
-  margin: 8px;
+  width: 25%;
+  margin: 10px;
 }
 
 .degrees-count {
@@ -151,5 +155,16 @@ html {
 }
 
 .degrees-count > h1 {
+  margin: 0 auto;
   font-size: 3em;
+}
+
+.paths-chosen-container > .traceable {
+  width: 60%;
+  margin: 0 auto;
+  display: flex;
+}
+
+.paths-chosen-container > .traceable-movie {
+  justify-content: flex-end;
 }

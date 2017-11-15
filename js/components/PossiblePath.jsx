@@ -28,7 +28,12 @@ class PossiblePath extends Component {
 
     return (
       <div className={pathClass} onClick={this.handleClick}>
-        <Traceable name={this.props.name} image={this.props.image} isCurrent={this.props.isCurrent}>
+        <Traceable
+          name={this.props.name}
+          type={this.props.traceableType}
+          image={this.props.image}
+          isCurrent={this.props.isCurrent}
+        >
           {this.props.children}
         </Traceable>
       </div>
