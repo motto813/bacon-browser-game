@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import PossiblePath from "./PossiblePath";
 
 const PendingPath = props => (
-  <div className="pending-path current-path">
+  <div className="current-traceable pending-path">
     <h4>{props.name}</h4>
     <div className="current-clickables">
       <div className="cancel-path" onClick={props.cancelPath}>

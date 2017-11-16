@@ -119,7 +119,7 @@ class GamePlay extends Component {
 
     return (
       <div className="game-container">
-        <div className="current-path starting">
+        <div className="current-traceable starting">
           <Traceable
             isCurrent
             type={this.state.currentTraceable.traceableType}
@@ -128,7 +128,7 @@ class GamePlay extends Component {
           />
         </div>
         <div className="paths-container">{pathPending ? currentPath : paths}</div>
-        <div className="current-path ending">
+        <div className="current-traceable ending">
           <Traceable
             isCurrent
             type={this.state.targetTraceable.traceableType}
