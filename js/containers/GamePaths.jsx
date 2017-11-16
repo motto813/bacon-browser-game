@@ -71,7 +71,7 @@ class GamePaths extends Component {
           <h4>{this.state.currentPath.traceable.name}</h4>
           <div className="current-clickables">
             <div className="cancel-path" onClick={this.handleCancelPathClick}>
-              <button>Cancel</button>
+              <button className="clickable-path">Cancel</button>
             </div>
             <PossiblePath
               isCurrent
@@ -82,7 +82,7 @@ class GamePaths extends Component {
               targetId={this.props.targetTraceable.id}
             />
             <div className="confirm-path" onClick={this.handleConfirmPathClick}>
-              <button>Confirm</button>
+              <button className="clickable-path">Confirm</button>
             </div>
           </div>
         </div>
