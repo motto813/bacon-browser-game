@@ -13,7 +13,7 @@ const GameStart = props => {
     startingImage = (
       <PossiblePath
         isCurrent
-        clickEvent={props.choosePath}
+        clickEvent={props.startGame}
         traceableType={props.startingTraceable.type}
         traceableId={props.startingTraceable.id}
         targetId={props.endingTraceable.id}
@@ -60,13 +60,13 @@ GameStart.propTypes = {
     name: PropTypes.string,
     imageURL: PropTypes.string
   }),
-  choosePath: PropTypes.func
+  startGame: PropTypes.func
 };
 
 GameStart.defaultProps = {
   startingTraceable: {},
   endingTraceable: {},
-  choosePath: function noop() {}
+  startGame: function noop() {}
 };
 
 export default GameStart;

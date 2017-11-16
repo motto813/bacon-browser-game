@@ -7,19 +7,14 @@ const GameResults = props => {
   const degrees = props.winner ? props.degreesCount : "?";
   const degreeSymbol = "\u00B0";
 
-  const paths = props.pathsChosen.map((path, index) => {
-    if (path.traceable) {
-      return (
-        <Traceable
-          key={path.traceable.tmdb_id}
-          type={path.traceableType}
-          name={path.traceable.name}
-          image={path.traceable.image_url}
-        />
-      );
-    }
-    return <Traceable key={index} />;
-  });
+  const paths = props.pathsChosen.map(path => (
+    <Traceable
+      key={path.traceable.tmdb_id}
+      type={path.traceableType}
+      name={path.traceable.name}
+      image={path.traceable.image_url}
+    />
+  ));
 
   return (
     <div className="results-container">

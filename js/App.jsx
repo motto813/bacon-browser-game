@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Landing from "./Landing";
-import GamePlay from "./GamePlay";
+import Game from "./Game";
 
 if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
   require("../public/style.css");
@@ -14,7 +14,7 @@ const App = () => (
     <div className="app">
       <Switch>
         <Route exact path="/" component={Landing} />
-        <Route path="/games" component={GamePlay} />
+        <Route path="/game" component={Game} />
         <Route component={FourOhFour} />
       </Switch>
     </div>
