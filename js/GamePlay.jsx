@@ -1,11 +1,8 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import gameAPI from "../gameAPI";
 import GameStart from "./containers/GameStart";
 import GamePaths from "./containers/GamePaths";
-import PossiblePath from "./components/PossiblePath";
-import Traceable from "./components/Traceable";
-import Spinner from "./components/Spinner";
+import GameResults from "./containers/GameResults";
 
 if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
   require("../public/style.css");
@@ -14,8 +11,6 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
 const gameModes = {
   start: "start",
   listPaths: "listPaths",
-  pathPending: "pathPending",
-  winningPathPresent: "winningPathPresent",
   results: "results"
 };
 
@@ -29,7 +24,6 @@ class GamePlay extends Component {
       startingActor: {},
       endingActor: {},
       currentTraceable: {},
-      currentPath: {},
       possiblePaths: [],
       pathsChosen: [],
       degreesCount: 0,
@@ -81,13 +75,12 @@ class GamePlay extends Component {
       }
     })
       .then(response => {
-        console.log(response.data);
         if (response.data.game_is_finished) {
           this.setState(prevState => ({
             mode: gameModes.results,
             pathsChosen: prevState.pathsChosen.concat({
-              traceableType: this.state.currentPath.traceable_type,
-              traceable: this.state.currentPath.traceable
+              traceableType: "Actor",
+              traceable: this.state.endingActor
             }),
             winner: true
           }));
@@ -144,63 +137,14 @@ class GamePlay extends Component {
         />
       );
     } else if (this.state.mode === gameModes.results) {
-      // *********************************************************
-      // Results View
-      // *********************************************************
-      let startingActor;
-      let endingActor;
-      let pathsChosen;
-
-      if (this.state.startingActor.id) {
-        startingActor = <h3>{this.state.startingActor.name}</h3>;
-      } else {
-        startingActor = (
-          <Traceable isCurrent>
-            <Spinner />
-          </Traceable>
-        );
-      }
-      if (this.state.endingActor.id) {
-        endingActor = <h3>{this.state.endingActor.name}</h3>;
-      } else {
-        endingActor = (
-          <Traceable isCurrent>
-            <Spinner />
-          </Traceable>
-        );
-      }
-      if (this.state.pathsChosen.length !== 0) {
-        pathsChosen = this.state.pathsChosen.map(path => (
-          <Traceable
-            key={path.traceable.tmdb_id}
-            type={path.traceableType}
-            name={path.traceable.name}
-            image={path.traceable.image_url}
-          />
-        ));
-      } else {
-        pathsChosen = [...Array(this.state.pathsChosen.length)].map((element, index) => (
-          <PossiblePath key={index}>
-            <Spinner />
-          </PossiblePath>
-        ));
-      }
-      const degrees = this.state.winner ? this.state.degreesCount : "?";
-      const degreeSymbol = "\u00B0";
       return (
-        <div className="results-container">
-          <div className="synopsis">
-            <div className="given-path starting">{startingActor}</div>
-            <div className="degrees-count">
-              <h1>{`${degrees}${degreeSymbol}`}</h1>
-            </div>
-            <div className="given-path ending">{endingActor}</div>
-          </div>
-          <div className="paths-chosen-container">{pathsChosen}</div>
-          <Link to="/">
-            <button className="restart-button">New Game</button>
-          </Link>
-        </div>
+        <GameResults
+          startingTraceable={{ name: this.state.startingActor.name }}
+          endingTraceable={{ name: this.state.endingActor.name }}
+          pathsChosen={this.state.pathsChosen}
+          winner={this.state.winner}
+          degreesCount={this.state.degreesCount}
+        />
       );
     }
 

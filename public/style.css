@@ -171,6 +171,6 @@ html {
   display: flex;
 }
 
-.paths-chosen-container > .traceable-movie {
+.paths-chosen-container > .traceable-actor {
   justify-content: flex-end;
 }
