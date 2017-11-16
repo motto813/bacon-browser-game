@@ -22,14 +22,8 @@ class Game extends Component {
     this.state = {
       gameId: 0,
       mode: gameModes.gameStart,
-      startingTraceable: {
-        traceableType: this.props.startingType,
-        traceable: {}
-      },
-      endingTraceable: {
-        traceableType: this.props.startingType,
-        traceable: {}
-      },
+      startingTraceable: {},
+      endingTraceable: {},
       pathsChosen: [],
       degreesCount: 0,
       winner: false
@@ -55,14 +49,8 @@ class Game extends Component {
       .then(response => {
         this.setState({
           gameId: response.data.game_id,
-          startingTraceable: {
-            traceableType: "Actor",
-            traceable: response.data.starting_actor
-          },
-          endingTraceable: {
-            traceableType: "Actor",
-            traceable: response.data.ending_actor
-          }
+          startingTraceable: Object.assign({}, { type: this.props.startingType }, response.data.starting_actor),
+          endingTraceable: Object.assign({}, { type: this.props.startingType }, response.data.ending_actor)
         });
       })
       .catch(error => {
@@ -72,27 +60,13 @@ class Game extends Component {
 
   startGame() {
     this.setState({
-      mode: gameModes.gamePlay // ,
-      // startingTraceable: {
-      //   traceableType,
-      //   traceable:
-      //     traceableId === prevState.startingTraceable.traceable.id
-      //       ? prevState.startingTraceable.traceable
-      //       : prevState.endingTraceable.traceable
-      // },
-      // endingTraceable: {
-      //   traceableType,
-      //   traceable:
-      //     traceableId !== prevState.startingTraceable.traceable.id
-      //       ? prevState.endingTraceable.traceable
-      //       : prevState.startingTraceable.traceable
-      // }
+      mode: gameModes.gamePlay
     });
   }
 
-  addPathChosen(traceableType, traceable) {
+  addPathChosen(traceableType, traceableName, traceableImage) {
     this.setState(prevState => ({
-      pathsChosen: prevState.pathsChosen.concat({ traceableType, traceable }),
+      pathsChosen: prevState.pathsChosen.concat({ type: traceableType, name: traceableName, image: traceableImage }),
       degreesCount: traceableType === "Movie" ? prevState.degreesCount + 1 : prevState.degreesCount
     }));
   }
@@ -106,16 +80,16 @@ class Game extends Component {
       return (
         <GameStart
           startingTraceable={{
-            type: this.state.startingTraceable.traceableType,
-            id: this.state.startingTraceable.traceable.id,
-            name: this.state.startingTraceable.traceable.name,
-            imageURL: this.state.startingTraceable.traceable.image_url
+            type: this.state.startingTraceable.type,
+            id: this.state.startingTraceable.id,
+            name: this.state.startingTraceable.name,
+            image: this.state.startingTraceable.image_url
           }}
           endingTraceable={{
-            type: this.state.endingTraceable.traceableType,
-            id: this.state.endingTraceable.traceable.id,
-            name: this.state.endingTraceable.traceable.name,
-            imageURL: this.state.endingTraceable.traceable.image_url
+            type: this.state.endingTraceable.type,
+            id: this.state.endingTraceable.id,
+            name: this.state.endingTraceable.name,
+            image: this.state.endingTraceable.image_url
           }}
           startGame={this.startGame}
         />
@@ -125,20 +99,16 @@ class Game extends Component {
         <GamePlay
           gameId={this.state.gameId}
           startingTraceable={{
-            traceableType: this.state.startingTraceable.traceableType,
-            traceable: {
-              id: this.state.startingTraceable.traceable.id,
-              name: this.state.startingTraceable.traceable.name,
-              image_url: this.state.startingTraceable.traceable.image_url
-            }
+            type: this.state.startingTraceable.type,
+            id: this.state.startingTraceable.id,
+            name: this.state.startingTraceable.name,
+            image_url: this.state.startingTraceable.image_url
           }}
           endingTraceable={{
-            traceableType: this.state.endingTraceable.traceableType,
-            traceable: {
-              id: this.state.endingTraceable.traceable.id,
-              name: this.state.endingTraceable.traceable.name,
-              image_url: this.state.endingTraceable.traceable.image_url
-            }
+            type: this.state.endingTraceable.type,
+            id: this.state.endingTraceable.id,
+            name: this.state.endingTraceable.name,
+            image_url: this.state.endingTraceable.image_url
           }}
           defaultPathCount={this.props.maxPathCount}
           addPathChosen={this.addPathChosen}
@@ -148,8 +118,6 @@ class Game extends Component {
     } else if (this.state.mode === gameModes.gameOver) {
       return (
         <GameResults
-          startingTraceable={{ name: this.state.startingTraceable.name }}
-          endingTraceable={{ name: this.state.endingTraceable.name }}
           pathsChosen={this.state.pathsChosen}
           winner={this.state.winner}
           degreesCount={this.state.degreesCount}

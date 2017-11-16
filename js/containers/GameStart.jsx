@@ -13,12 +13,12 @@ const GameStart = props => {
     startingImage = (
       <PossiblePath
         isCurrent
-        clickEvent={props.startGame}
-        traceableType={props.startingTraceable.type}
-        traceableId={props.startingTraceable.id}
-        targetId={props.endingTraceable.id}
+        type={props.startingTraceable.type}
+        id={props.startingTraceable.id}
         name={props.startingTraceable.name}
-        image={props.startingTraceable.imageURL}
+        image={props.startingTraceable.image}
+        targetId={props.endingTraceable.id}
+        clickEvent={props.startGame}
       />
     );
   } else {
@@ -30,19 +30,19 @@ const GameStart = props => {
 
   return (
     <div className="game-container">
-      <div className="current-path starting">
+      <div className="current-traceable starting">
         <div className="starting-info info-text">
           <h2>Starting with</h2>
           {startingName}
         </div>
         {startingImage}
       </div>
-      <div className="current-path ending">
+      <div className="current-traceable ending">
         <div className="ending-info info-text">
           <h2>Find a path to</h2>
           {endingName}
         </div>
-        <Traceable isCurrent name={props.endingTraceable.name} image={props.endingTraceable.imageURL} />
+        <Traceable isCurrent name={props.endingTraceable.name} image={props.endingTraceable.image} />
       </div>
     </div>
   );
@@ -53,12 +53,12 @@ GameStart.propTypes = {
     type: PropTypes.string,
     id: PropTypes.number,
     name: PropTypes.string,
-    imageURL: PropTypes.string
+    image: PropTypes.string
   }),
   endingTraceable: PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string,
-    imageURL: PropTypes.string
+    image: PropTypes.string
   }),
   startGame: PropTypes.func
 };

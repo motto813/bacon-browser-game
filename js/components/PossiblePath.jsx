@@ -14,13 +14,13 @@ class PossiblePath extends Component {
   }
 
   handleClick() {
-    this.props.clickEvent(this.props.traceableType, this.props.traceableId);
+    this.props.clickEvent(this.props.type, this.props.id);
   }
 
   render() {
     let pathClass;
 
-    if (this.props.traceableType === "Actor" && this.props.traceableId === this.props.targetId) {
+    if (this.props.type === "Actor" && this.props.id === this.props.targetId) {
       pathClass = "possible-path winning-path";
     } else {
       pathClass = "possible-path";
@@ -29,10 +29,10 @@ class PossiblePath extends Component {
     return (
       <div className={pathClass} onClick={this.handleClick}>
         <Traceable
-          name={this.props.name}
-          type={this.props.traceableType}
-          image={this.props.image}
           isCurrent={this.props.isCurrent}
+          type={this.props.type}
+          name={this.props.name}
+          image={this.props.image}
         >
           {this.props.children}
         </Traceable>
@@ -42,23 +42,23 @@ class PossiblePath extends Component {
 }
 
 PossiblePath.propTypes = {
-  traceableType: PropTypes.string,
-  traceableId: PropTypes.number,
-  targetId: PropTypes.number,
+  isCurrent: PropTypes.bool,
+  type: PropTypes.string,
+  id: PropTypes.number,
   name: PropTypes.string,
   image: PropTypes.string,
-  isCurrent: PropTypes.bool,
+  targetId: PropTypes.number,
   clickEvent: PropTypes.func,
   children: PropTypes.node
 };
 
 PossiblePath.defaultProps = {
-  traceableType: "Actor",
-  traceableId: 0,
-  targetId: 0,
+  isCurrent: false,
+  type: "Actor",
+  id: 0,
   name: "",
   image: "",
-  isCurrent: false,
+  targetId: 0,
   clickEvent: function noop() {},
   children: ""
 };

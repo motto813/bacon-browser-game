@@ -24,20 +24,22 @@ class GamePlay extends Component {
   }
 
   componentDidMount() {
-    this.choosePath(this.props.startingTraceable.traceableType, this.props.startingTraceable.traceable.id);
+    this.choosePath(this.props.startingTraceable.type, this.props.startingTraceable.id);
   }
 
   setCurrentPath(traceableType, traceableId) {
     this.setState({
       pathPending: true,
-      currentPath: this.state.possiblePaths.find(
-        path => path.traceableType === traceableType && path.traceable.id === traceableId
-      )
+      currentPath: this.state.possiblePaths.find(path => path.type === traceableType && path.id === traceableId)
     });
   }
 
   choosePath(traceableType, traceableId) {
-    this.props.addPathChosen(this.state.currentPath.traceableType, this.state.currentPath.traceable);
+    this.props.addPathChosen(
+      this.state.currentPath.type,
+      this.state.currentPath.name,
+      this.state.currentPath.image_url
+    );
 
     gameAPI({
       method: "post",
@@ -56,14 +58,14 @@ class GamePlay extends Component {
         } else {
           this.setState({
             pathPending: false,
-            currentTraceable: {
-              traceableType: response.data.current_traceable.traceable_type,
-              traceable: response.data.current_traceable.traceable
-            },
-            possiblePaths: response.data.possible_paths.map(path => ({
-              traceableType: path.traceable_type,
-              traceable: path.traceable
-            }))
+            currentTraceable: Object.assign(
+              {},
+              { type: response.data.current_traceable.traceable_type },
+              response.data.current_traceable.traceable
+            ),
+            possiblePaths: response.data.possible_paths.map(path =>
+              Object.assign({}, { type: path.traceable_type }, path.traceable)
+            )
           });
         }
       })
@@ -77,63 +79,58 @@ class GamePlay extends Component {
   }
 
   handleConfirmPathClick() {
-    this.choosePath(this.state.currentPath.traceableType, this.state.currentPath.traceable.id);
+    this.choosePath(this.state.currentPath.type, this.state.currentPath.id);
   }
 
   render() {
     const { pathPending } = this.state;
 
     let paths;
-    let currentPath;
 
     if (this.state.possiblePaths.length !== 0) {
       paths = this.state.possiblePaths.map(path => (
         <PossiblePath
-          key={path.traceable.tmdb_id}
+          key={path.tmdb_id}
+          type={path.type}
+          id={path.id}
+          name={path.name}
+          image={path.image_url}
+          targetId={this.state.targetTraceable.id}
           clickEvent={this.setCurrentPath}
-          traceableType={path.traceableType}
-          traceableId={path.traceable.id}
-          name={path.traceable.name}
-          image={path.traceable.image_url}
-          targetId={this.state.targetTraceable.traceable.id}
         />
       ));
     } else {
       paths = [...Array(this.props.defaultPathCount)].map((element, index) => <Traceable key={index} />);
     }
-    if (this.state.currentPath.traceable) {
-      currentPath = (
-        <PendingPath
-          type={this.state.currentPath.traceableType}
-          id={this.state.currentPath.traceable.id}
-          name={this.state.currentPath.traceable.name}
-          image={this.state.currentPath.traceable.image_url}
-          targetId={this.state.targetTraceable.traceable.id}
-          cancelPath={this.handleCancelPathClick}
-          confirmPath={this.handleConfirmPathClick}
-        />
-      );
-    } else {
-      currentPath = <Traceable isCurrent />;
-    }
+    const currentPath = (
+      <PendingPath
+        type={this.state.currentPath.type}
+        id={this.state.currentPath.id}
+        name={this.state.currentPath.name}
+        image={this.state.currentPath.image_url}
+        targetId={this.state.targetTraceable.id}
+        cancelPath={this.handleCancelPathClick}
+        confirmPath={this.handleConfirmPathClick}
+      />
+    );
 
     return (
       <div className="game-container">
         <div className="current-traceable starting">
           <Traceable
             isCurrent
-            type={this.state.currentTraceable.traceableType}
-            name={this.state.currentTraceable.traceable.name}
-            image={this.state.currentTraceable.traceable.image_url}
+            type={this.state.currentTraceable.type}
+            name={this.state.currentTraceable.name}
+            image={this.state.currentTraceable.image_url}
           />
         </div>
         <div className="paths-container">{pathPending ? currentPath : paths}</div>
         <div className="current-traceable ending">
           <Traceable
             isCurrent
-            type={this.state.targetTraceable.traceableType}
-            name={this.state.targetTraceable.traceable.name}
-            image={this.state.targetTraceable.traceable.image_url}
+            type={this.state.targetTraceable.type}
+            name={this.state.targetTraceable.name}
+            image={this.state.targetTraceable.image_url}
           />
         </div>
       </div>
@@ -144,12 +141,16 @@ class GamePlay extends Component {
 GamePlay.propTypes = {
   gameId: PropTypes.number,
   startingTraceable: PropTypes.shape({
-    traceableType: PropTypes.string,
-    traceable: PropTypes.object
+    type: PropTypes.string,
+    id: PropTypes.number,
+    name: PropTypes.string,
+    image_url: PropTypes.string
   }),
   endingTraceable: PropTypes.shape({
-    traceableType: PropTypes.string,
-    traceable: PropTypes.object
+    type: PropTypes.string,
+    id: PropTypes.number,
+    name: PropTypes.string,
+    image_url: PropTypes.string
   }),
   defaultPathCount: PropTypes.number,
   addPathChosen: PropTypes.func,

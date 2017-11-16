@@ -8,17 +8,15 @@ const GameResults = props => {
   const degreeSymbol = "\u00B0";
 
   const paths = props.pathsChosen.map((path, index) => (
-    <Traceable key={index} type={path.traceableType} name={path.traceable.name} image={path.traceable.image_url} />
+    <Traceable key={index} type={path.type} name={path.name} image={path.image} />
   ));
 
   return (
     <div className="results-container">
       <div className="synopsis">
-        <div className="given-path starting">{props.startingTraceable.name}</div>
         <div className="degrees-count">
           <h1>{`${degrees}${degreeSymbol}`}</h1>
         </div>
-        <div className="given-path ending">{props.endingTraceable.name}</div>
       </div>
       <div className="paths-chosen-container">{paths}</div>
       <Link to="/">
@@ -29,26 +27,19 @@ const GameResults = props => {
 };
 
 GameResults.propTypes = {
-  startingTraceable: PropTypes.shape({
-    name: PropTypes.string
-  }),
-  endingTraceable: PropTypes.shape({
-    name: PropTypes.string
-  }),
-  pathsChosen: PropTypes.arrayOf(PropTypes.object),
+  pathsChosen: PropTypes.arrayOf(
+    PropTypes.shape({
+      type: PropTypes.string,
+      name: PropTypes.string,
+      image: PropTypes.string
+    })
+  ),
   winner: PropTypes.bool,
   degreesCount: PropTypes.number
 };
 
 GameResults.defaultProps = {
-  startingTraceable: {},
-  endingTraceable: {},
-  pathsChosen: [
-    {
-      traceableType: "Actor",
-      traceable: {}
-    }
-  ],
+  pathsChosen: [{}],
   winner: false,
   degreesCount: 0
 };

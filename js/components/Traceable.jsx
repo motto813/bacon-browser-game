@@ -25,18 +25,18 @@ const Traceable = props => {
 };
 
 Traceable.propTypes = {
-  name: PropTypes.string,
-  type: PropTypes.string,
-  image: PropTypes.string,
   isCurrent: PropTypes.bool,
+  type: PropTypes.string,
+  name: PropTypes.string,
+  image: PropTypes.string,
   children: PropTypes.node
 };
 
 Traceable.defaultProps = {
-  name: "",
-  type: "Actor",
-  image: "",
   isCurrent: false,
+  type: "Actor",
+  name: "",
+  image: "",
   children: ""
 };
 
