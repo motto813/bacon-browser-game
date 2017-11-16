@@ -94,7 +94,7 @@ class GamePlay extends Component {
           traceableId={path.traceable.id}
           name={path.traceable.name}
           image={path.traceable.image_url}
-          targetId={this.state.targetTraceable.id}
+          targetId={this.state.targetTraceable.traceable.id}
         />
       ));
     } else {
@@ -114,7 +114,7 @@ class GamePlay extends Component {
               traceableId={this.state.currentPath.traceable.id}
               name={this.state.currentPath.traceable.name}
               image={this.state.currentPath.traceable.image_url}
-              targetId={this.state.targetTraceable.id}
+              targetId={this.state.targetTraceable.traceable.id}
             />
             <div className="confirm-path" onClick={this.handleConfirmPathClick}>
               <button className="clickable-path">Confirm</button>
@@ -154,11 +154,11 @@ GamePlay.propTypes = {
   gameId: PropTypes.number,
   startingTraceable: PropTypes.shape({
     traceableType: PropTypes.string,
-    traceable: PropTypes.func
+    traceable: PropTypes.object
   }),
   endingTraceable: PropTypes.shape({
     traceableType: PropTypes.string,
-    traceable: PropTypes.func
+    traceable: PropTypes.object
   }),
   defaultPathCount: PropTypes.number,
   addPathChosen: PropTypes.func,
