@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import gameAPI from "../gameAPI";
 import GameStart from "./containers/GameStart";
 import GamePaths from "./containers/GamePaths";
@@ -133,6 +134,7 @@ class GamePlay extends Component {
             imageURL: this.state.endingActor.image_url
           }}
           possiblePaths={this.state.possiblePaths}
+          defaultPathCount={this.props.maxPathCount}
           choosePath={this.choosePath}
         />
       );
@@ -156,5 +158,13 @@ class GamePlay extends Component {
     );
   }
 }
+
+GamePlay.propTypes = {
+  maxPathCount: PropTypes.number
+};
+
+GamePlay.defaultProps = {
+  maxPathCount: 8
+};
 
 export default GamePlay;

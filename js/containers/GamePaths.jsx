@@ -129,10 +129,12 @@ GamePaths.propTypes = {
 GamePaths.defaultProps = {
   currentTraceable: {},
   targetTraceable: {},
-  possiblePaths: Array(8).map(() => ({
-    traceableType: "Actor",
-    traceable: {}
-  })),
+  possiblePaths: [
+    {
+      traceableType: "Actor",
+      traceable: {}
+    }
+  ],
   choosePath: function noop() {}
 };
 
