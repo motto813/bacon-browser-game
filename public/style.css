@@ -123,7 +123,7 @@ html {
   margin: 8px;
 }
 
-.current-clickables {
+.pending-container {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -175,13 +175,12 @@ html {
   justify-content: flex-end;
 }
 
-.confirm-path,
-.cancel-path {
+.clickable-path {
   width: 25%;
   margin: 30px auto;
 }
 
-button.clickable-path {
+.clickable-path > button {
   background-color: black;
   width: 100%;
   margin: 0 auto;

@@ -5,9 +5,9 @@ import PossiblePath from "./PossiblePath";
 const PendingPath = props => (
   <div className="current-traceable pending-path">
     <h4>{props.name}</h4>
-    <div className="current-clickables">
-      <div className="cancel-path" onClick={props.cancelPath}>
-        <button className="clickable-path">Cancel</button>
+    <div className="pending-container">
+      <div className="clickable-path" onClick={props.cancelPath}>
+        <button>Cancel</button>
       </div>
       <PossiblePath
         isCurrent
@@ -17,8 +17,8 @@ const PendingPath = props => (
         image={props.image}
         targetId={props.targetId}
       />
-      <div className="confirm-path" onClick={props.confirmPath}>
-        <button className="clickable-path">Confirm</button>
+      <div className="clickable-path" onClick={props.confirmPath}>
+        <button>Confirm</button>
       </div>
     </div>
   </div>
