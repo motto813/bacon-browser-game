@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import gameAPI from "../../gameAPI";
+import PendingPath from "../components/PendingPath";
 import PossiblePath from "../components/PossiblePath";
 import Traceable from "../components/Traceable";
 
@@ -102,25 +103,15 @@ class GamePlay extends Component {
     }
     if (this.state.currentPath.traceable) {
       currentPath = (
-        <div className="current-path middle">
-          <h4>{this.state.currentPath.traceable.name}</h4>
-          <div className="current-clickables">
-            <div className="cancel-path" onClick={this.handleCancelPathClick}>
-              <button className="clickable-path">Cancel</button>
-            </div>
-            <PossiblePath
-              isCurrent
-              traceableType={this.state.currentPath.traceableType}
-              traceableId={this.state.currentPath.traceable.id}
-              name={this.state.currentPath.traceable.name}
-              image={this.state.currentPath.traceable.image_url}
-              targetId={this.state.targetTraceable.traceable.id}
-            />
-            <div className="confirm-path" onClick={this.handleConfirmPathClick}>
-              <button className="clickable-path">Confirm</button>
-            </div>
-          </div>
-        </div>
+        <PendingPath
+          type={this.state.currentPath.traceableType}
+          id={this.state.currentPath.traceable.id}
+          name={this.state.currentPath.traceable.name}
+          image={this.state.currentPath.traceable.image_url}
+          targetId={this.state.targetTraceable.traceable.id}
+          cancelPath={this.handleCancelPathClick}
+          confirmPath={this.handleConfirmPathClick}
+        />
       );
     } else {
       currentPath = <Traceable isCurrent />;
