@@ -1,7 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import Traceable from "../components/Traceable";
+import Traceable from "./Traceable";
+
+if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+  require("../../../public/style.css");
+}
 
 const GameResults = props => {
   const degrees = props.winner ? props.degreesCount : "?";
@@ -39,7 +43,13 @@ GameResults.propTypes = {
 };
 
 GameResults.defaultProps = {
-  pathsChosen: [{}],
+  pathsChosen: [
+    {
+      type: "default",
+      name: "",
+      image: ""
+    }
+  ],
   winner: false,
   degreesCount: 0
 };

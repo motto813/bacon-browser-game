@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Traceable from "./Traceable";
 
 if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
-  require("../../public/style.css");
+  require("../../../public/style.css");
 }
 
 class PossiblePath extends Component {
@@ -14,13 +14,13 @@ class PossiblePath extends Component {
   }
 
   handleClick() {
-    this.props.clickEvent({ type: this.props.type, id: this.props.id, name: this.props.name, image: this.props.image });
+    this.props.pathEvent(this.props.traceable);
   }
 
   render() {
     let pathClass;
 
-    if (this.props.type === "Actor" && this.props.id === this.props.targetId) {
+    if (this.props.traceable.type === "Actor" && this.props.traceable.id === this.props.targetId) {
       pathClass = "possible-path winning-path";
     } else {
       pathClass = "possible-path";
@@ -30,12 +30,10 @@ class PossiblePath extends Component {
       <div className={pathClass} onClick={this.handleClick}>
         <Traceable
           isCurrent={this.props.isCurrent}
-          type={this.props.type}
-          name={this.props.name}
-          image={this.props.image}
-        >
-          {this.props.children}
-        </Traceable>
+          type={this.props.traceable.type}
+          name={this.props.traceable.name}
+          image={this.props.traceable.image}
+        />
       </div>
     );
   }
@@ -43,24 +41,26 @@ class PossiblePath extends Component {
 
 PossiblePath.propTypes = {
   isCurrent: PropTypes.bool,
-  type: PropTypes.string,
-  id: PropTypes.number,
-  name: PropTypes.string,
-  image: PropTypes.string,
+  traceable: PropTypes.shape({
+    type: PropTypes.string,
+    id: PropTypes.number,
+    name: PropTypes.string,
+    image: PropTypes.string
+  }),
   targetId: PropTypes.number,
-  clickEvent: PropTypes.func,
-  children: PropTypes.node
+  pathEvent: PropTypes.func
 };
 
 PossiblePath.defaultProps = {
   isCurrent: false,
-  type: "Actor",
-  id: Math.random(),
-  name: "",
-  image: "",
-  targetId: 0,
-  clickEvent: function noop() {},
-  children: ""
+  traceable: {
+    type: "default",
+    id: Math.random(),
+    name: "",
+    image: ""
+  },
+  targetId: Math.random(),
+  pathEvent: function noop() {}
 };
 
 export default PossiblePath;

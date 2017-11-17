@@ -1,10 +1,10 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Landing from "./Landing";
-import Game from "./Game";
+import Game from "./game/Game";
 
 if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
-  require("../public/style.css");
+  require("../../public/style.css");
 }
 
 const FourOhFour = () => <h1>404</h1>;

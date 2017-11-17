@@ -3,7 +3,7 @@ const webpack = require("webpack");
 
 const config = {
   context: __dirname,
-  entry: ["./js/ClientApp.jsx"],
+  entry: ["./src/components/ClientApp.jsx"],
   devtool: process.env.NODE_ENV !== "production" ? "cheap-eval-source-map" : false,
   output: {
     path: path.resolve(__dirname, "public"),

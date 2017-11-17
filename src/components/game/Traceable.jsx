@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Spinner from "./Spinner";
+import Spinner from "../common/Spinner";
 
 if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
-  require("../../public/style.css");
+  require("../../../public/style.css");
 }
 
 const Traceable = props => {
@@ -16,28 +16,21 @@ const Traceable = props => {
   if (props.isCurrent) imageSize = "large";
   else imageSize = "small";
 
-  return (
-    <div className={`traceable traceable-${imageSize} traceable-${props.type.toLowerCase()}`}>
-      {props.children}
-      {image}
-    </div>
-  );
+  return <div className={`traceable traceable-${imageSize} traceable-${props.type.toLowerCase()}`}>{image}</div>;
 };
 
 Traceable.propTypes = {
   isCurrent: PropTypes.bool,
   type: PropTypes.string,
   name: PropTypes.string,
-  image: PropTypes.string,
-  children: PropTypes.node
+  image: PropTypes.string
 };
 
 Traceable.defaultProps = {
   isCurrent: false,
-  type: "Actor",
+  type: "default",
   name: "",
-  image: "",
-  children: ""
+  image: ""
 };
 
 export default Traceable;
