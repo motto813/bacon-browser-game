@@ -14,7 +14,7 @@ class PossiblePath extends Component {
   }
 
   handleClick() {
-    this.props.clickEvent(this.props.type, this.props.id);
+    this.props.clickEvent({ type: this.props.type, id: this.props.id, name: this.props.name, image: this.props.image });
   }
 
   render() {
@@ -55,7 +55,7 @@ PossiblePath.propTypes = {
 PossiblePath.defaultProps = {
   isCurrent: false,
   type: "Actor",
-  id: 0,
+  id: Math.random(),
   name: "",
   image: "",
   targetId: 0,

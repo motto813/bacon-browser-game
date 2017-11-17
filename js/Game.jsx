@@ -1,19 +1,24 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import gameAPI from "../gameAPI";
-import GameStart from "./containers/GameStart";
-import GamePlay from "./containers/GamePlay";
+import GamePaths from "./containers/GamePaths";
 import GameResults from "./containers/GameResults";
+import PossiblePath from "./components/PossiblePath";
 
 if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
   require("../public/style.css");
 }
 
-const gameModes = {
-  gameStart: "gameStart",
-  gamePlay: "gamePlay",
-  gameOver: "gameOver"
-};
+const formatTraceable = (type, traceable) =>
+  Object.assign(
+    {},
+    {
+      type,
+      id: traceable.id,
+      name: traceable.name,
+      image: traceable.image_url
+    }
+  );
 
 class Game extends Component {
   constructor(props) {
@@ -21,17 +26,18 @@ class Game extends Component {
 
     this.state = {
       gameId: 0,
-      mode: gameModes.gameStart,
-      startingTraceable: {},
-      endingTraceable: {},
+      gameStarted: false,
+      currentTraceable: {},
+      targetTraceable: {},
+      possiblePaths: [],
       pathsChosen: [],
       degreesCount: 0,
+      gameOver: false,
       winner: false
     };
 
-    this.startGame = this.startGame.bind(this);
-    this.endGame = this.endGame.bind(this);
-    this.addPathChosen = this.addPathChosen.bind(this);
+    this.choosePath = this.choosePath.bind(this);
+    this.swapCurrentTraceables = this.swapCurrentTraceables.bind(this);
   }
 
   componentDidMount() {
@@ -49,8 +55,8 @@ class Game extends Component {
       .then(response => {
         this.setState({
           gameId: response.data.game_id,
-          startingTraceable: Object.assign({}, { type: this.props.startingType }, response.data.starting_actor),
-          endingTraceable: Object.assign({}, { type: this.props.startingType }, response.data.ending_actor)
+          currentTraceable: formatTraceable(this.props.startingType, response.data.starting_actor),
+          targetTraceable: formatTraceable(this.props.startingType, response.data.ending_actor)
         });
       })
       .catch(error => {
@@ -58,64 +64,95 @@ class Game extends Component {
       });
   }
 
-  startGame() {
-    this.setState({
-      mode: gameModes.gamePlay
-    });
+  choosePath(traceable) {
+    this.setState(prevState => ({
+      gameStarted: true,
+      currentTraceable: traceable,
+      pathsChosen: prevState.pathsChosen.concat(traceable),
+      degreesCount: traceable.type === "Movie" ? prevState.degreesCount + 1 : prevState.degreesCount
+    }));
+    gameAPI({
+      method: "post",
+      url: `/games/${this.state.gameId}/paths`,
+      data: {
+        path: {
+          traceable_type: traceable.type,
+          traceable_id: traceable.id
+        }
+      }
+    })
+      .then(response => {
+        if (response.data.game_is_finished) {
+          this.endGame(true);
+        } else {
+          this.addPossiblePaths(
+            response.data.possible_paths.map(path => formatTraceable(path.traceable_type, path.traceable))
+          );
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
-  addPathChosen(traceableType, traceableName, traceableImage) {
+  endGame(asWinner) {
+    this.setState({ gameOver: true, winner: asWinner });
+  }
+
+  addPossiblePaths(possiblePaths) {
+    this.setState({ possiblePaths });
+  }
+
+  swapCurrentTraceables() {
     this.setState(prevState => ({
-      pathsChosen: prevState.pathsChosen.concat({ type: traceableType, name: traceableName, image: traceableImage }),
-      degreesCount: traceableType === "Movie" ? prevState.degreesCount + 1 : prevState.degreesCount
+      currentTraceable: prevState.targetTraceable,
+      targetTraceable: prevState.currentTraceable
     }));
   }
 
-  endGame(details) {
-    this.setState({ mode: gameModes.gameOver, winner: details.winner });
-  }
-
   render() {
-    if (this.state.mode === gameModes.gameStart) {
-      return (
-        <GameStart
-          startingTraceable={{
-            type: this.state.startingTraceable.type,
-            id: this.state.startingTraceable.id,
-            name: this.state.startingTraceable.name,
-            image: this.state.startingTraceable.image_url
-          }}
-          endingTraceable={{
-            type: this.state.endingTraceable.type,
-            id: this.state.endingTraceable.id,
-            name: this.state.endingTraceable.name,
-            image: this.state.endingTraceable.image_url
-          }}
-          startGame={this.startGame}
-        />
-      );
-    } else if (this.state.mode === gameModes.gamePlay) {
-      return (
-        <GamePlay
-          gameId={this.state.gameId}
-          startingTraceable={{
-            type: this.state.startingTraceable.type,
-            id: this.state.startingTraceable.id,
-            name: this.state.startingTraceable.name,
-            image_url: this.state.startingTraceable.image_url
-          }}
-          endingTraceable={{
-            type: this.state.endingTraceable.type,
-            id: this.state.endingTraceable.id,
-            name: this.state.endingTraceable.name,
-            image_url: this.state.endingTraceable.image_url
-          }}
-          defaultPathCount={this.props.maxPathCount}
-          addPathChosen={this.addPathChosen}
-          endGame={this.endGame}
-        />
-      );
-    } else if (this.state.mode === gameModes.gameOver) {
+    const startingInfo = (
+      <div className="starting-info info-text">
+        <h2>Starting with</h2>
+        <h3>{this.state.currentTraceable.name}</h3>
+      </div>
+    );
+    const endingInfo = (
+      <div className="starting-info info-text">
+        <h2>Find a path to</h2>
+        <h3>{this.state.targetTraceable.name}</h3>
+      </div>
+    );
+    const currentTraceable = (
+      <PossiblePath
+        isCurrent
+        type={this.state.currentTraceable.type}
+        id={this.state.currentTraceable.id}
+        name={this.state.currentTraceable.name}
+        image={this.state.currentTraceable.image}
+        clickEvent={!this.state.gameStarted ? this.choosePath : undefined}
+      />
+    );
+    const targetTraceable = (
+      <PossiblePath
+        isCurrent
+        type={this.state.targetTraceable.type}
+        id={this.state.targetTraceable.id}
+        name={this.state.targetTraceable.name}
+        image={this.state.targetTraceable.image}
+        clickEvent={this.swapCurrentTraceables}
+      />
+    );
+    const gamePaths = (
+      <GamePaths
+        possiblePaths={this.state.possiblePaths}
+        targetId={this.state.targetTraceable.id}
+        defaultPathCount={this.props.maxPathCount}
+        choosePath={this.choosePath}
+      />
+    );
+
+    if (this.state.gameOver) {
       return (
         <GameResults
           pathsChosen={this.state.pathsChosen}
@@ -127,8 +164,15 @@ class Game extends Component {
 
     return (
       <div className="game-container">
-        <div className="current-path starting">Uh</div>
-        <div className="current-path ending">Oh</div>
+        <div className="current-traceable starting">
+          {!this.state.gameStarted ? startingInfo : null}
+          {currentTraceable}
+        </div>
+        {this.state.gameStarted ? gamePaths : null}
+        <div className="current-traceable ending">
+          {!this.state.gameStarted ? endingInfo : null}
+          {targetTraceable}
+        </div>
       </div>
     );
   }

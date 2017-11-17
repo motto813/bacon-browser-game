@@ -36,7 +36,7 @@ PendingPath.propTypes = {
 
 PendingPath.defaultProps = {
   type: "Actor",
-  id: 0,
+  id: Math.random(),
   name: "",
   image: "",
   targetId: 10000000000,
