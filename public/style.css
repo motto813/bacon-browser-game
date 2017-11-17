@@ -129,6 +129,10 @@ html {
   justify-content: center;
 }
 
+.pending-path > h4 {
+  margin: 0 auto;
+}
+
 .winning-path > .traceable > img {
   border: solid #27dbc3 4px;
 }
