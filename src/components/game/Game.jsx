@@ -26,6 +26,7 @@ class Game extends Component {
     };
 
     this.choosePath = this.choosePath.bind(this);
+    this.endGame = this.endGame.bind(this);
     // this.swapCurrentTraceables = this.swapCurrentTraceables.bind(this);
   }
 
@@ -80,7 +81,8 @@ class Game extends Component {
     })
       .then(response => {
         if (response.data.game_is_finished) {
-          this.endGame(true);
+          this.setState({ winner: true });
+          this.endGame();
         } else {
           this.setPossiblePaths(
             response.data.possible_paths.map(path => formatTraceable(path.traceable_type, path.traceable))
@@ -92,8 +94,13 @@ class Game extends Component {
       });
   }
 
-  endGame(asWinner) {
-    this.setState({ gameOver: true, winner: asWinner });
+  endGame() {
+    this.setState({ gameOver: true });
+    if (!this.state.winner) {
+      this.setState(prevState => ({
+        pathsChosen: prevState.pathsChosen.concat(prevState.targetTraceable)
+      }));
+    }
   }
 
   // swapCurrentTraceables() {
@@ -114,6 +121,16 @@ class Game extends Component {
       <div className="starting-info info-text">
         <h2>Find a path to</h2>
         <h3>{this.state.targetTraceable.name}</h3>
+      </div>
+    );
+    const newPlayers = (
+      <div className="new-players modify-game" onClick={this.newPlayers}>
+        <button>New Players</button>
+      </div>
+    );
+    const endGame = (
+      <div className="end-game modify-game" onClick={this.endGame}>
+        <button>Give Up</button>
       </div>
     );
 
@@ -148,6 +165,7 @@ class Game extends Component {
         <div className="current-traceable ending">
           {!this.state.initialPathChosen ? endingInfo : null}
           <PossiblePath isCurrent traceable={this.state.targetTraceable} />
+          {!this.state.initialPathChosen ? newPlayers : endGame}
         </div>
       </div>
     );

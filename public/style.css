@@ -197,3 +197,30 @@ html {
   color: white;
   font-size: 1em;
 }
+
+.modify-game {
+  position: absolute;
+  width: 25%;
+  bottom: 8px;
+}
+
+.end-game {
+  left: 20px;
+}
+
+.new-players {
+  right: 20px;
+}
+
+.modify-game > button {
+  background-color: black;
+  width: 100%;
+  margin: 0 auto;
+  height: 50px;
+  border: none;
+  border-radius: 6px;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  font-family: "Shrikhand", cursive;
+  color: white;
+  font-size: 1em;
+}
