@@ -78,8 +78,6 @@ html {
 
 .current-traceable {
   position: absolute;
-  /*left: 0;*/
-  /*right: 0;*/
   margin: 0 auto;
 }
 
@@ -89,6 +87,11 @@ html {
 
 .current-traceable.ending {
   bottom: 4%;
+}
+
+.current-traceable > .possible-path {
+  display: flex;
+  justify-content: center;
 }
 
 .current-traceable.pending-path {
@@ -116,7 +119,7 @@ html {
   height: width * 1.5;
 }
 
-@keyframes blink {
+@keyframes loadingBlink {
   0% {
     opacity: 1;
   }
@@ -129,7 +132,7 @@ html {
 }
 
 img.loading-traceable {
-  animation: blink 2s;
+  animation: loadingBlink 2s;
   animation-iteration-count: infinite;
 }
 
@@ -154,8 +157,32 @@ img.loading-traceable {
   margin: 0 auto;
 }
 
+@keyframes shake {
+  10%,
+  90% {
+    transform: translate3d(0, -1px, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(0, 2px, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(0, -4px, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(0, 4px, 0);
+  }
+}
+
 .winning-path > .traceable > img {
-  border: solid #27dbc3 4px;
+  animation: shake 1.5s;
+  animation-iteration-count: infinite;
 }
 
 .results-container {
@@ -220,6 +247,20 @@ img.loading-traceable {
   font-size: 1em;
 }
 
+.movie-hints-container {
+  position: absolute;
+  bottom: 15%;
+  width: 75%;
+  z-index: -1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.movie-hints-container > .traceable > img {
+  opacity: 0.65;
+}
+
 .modify-game {
   position: absolute;
   width: 25%;
@@ -235,7 +276,7 @@ img.loading-traceable {
   right: 20px;
 }
 
-.modify-game > button {
+.modify-game button {
   background-color: black;
   width: 100%;
   margin: 0 auto;
