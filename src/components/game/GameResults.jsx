@@ -41,9 +41,16 @@ const GameResults = props => {
         </div>
       </div>
       <div className="paths-chosen-container">{paths}</div>
-      <Link to="/">
-        <button className="restart-button">New Game</button>
-      </Link>
+      <div className="end-game-buttons">
+        <div className="landing-button">
+          <Link to="/">
+            <button className="end-game">Quit</button>
+          </Link>
+        </div>
+        <div className="new-game-button" onClick={props.newGame}>
+          <button className="end-game">Play Again</button>
+        </div>
+      </div>
     </div>
   );
 };
@@ -63,7 +70,8 @@ GameResults.propTypes = {
     image: PropTypes.string
   }),
   winner: PropTypes.bool,
-  degreesCount: PropTypes.number
+  degreesCount: PropTypes.number,
+  newGame: PropTypes.func
 };
 
 GameResults.defaultProps = {
@@ -81,7 +89,8 @@ GameResults.defaultProps = {
     image: ""
   },
   winner: false,
-  degreesCount: 0
+  degreesCount: 0,
+  newGame: function noop() {}
 };
 
 export default GameResults;

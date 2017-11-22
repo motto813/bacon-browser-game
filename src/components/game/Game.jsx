@@ -31,6 +31,7 @@ class Game extends Component {
       winner: false
     };
 
+    this.newGame = this.newGame.bind(this);
     this.choosePath = this.choosePath.bind(this);
     this.endGame = this.endGame.bind(this);
     this.swapCurrentTraceables = this.swapCurrentTraceables.bind(this);
@@ -58,8 +59,40 @@ class Game extends Component {
       });
   }
 
+  setNewGameState() {
+    this.setState({
+      initialPathChosen: false,
+      showMovieHints: false,
+      movieHints: [],
+      pathsChosen: [],
+      degreesCount: 0,
+      gameOver: false,
+      winner: false
+    });
+  }
+
+  setGameStartingInfo(gameData) {
+    this.setState({
+      gameId: gameData.game_id,
+      currentTraceable: formatTraceable(this.props.startingType, gameData.starting_actor),
+      targetTraceable: formatTraceable(this.props.startingType, gameData.ending_actor),
+      startingTmdbId: gameData.starting_actor.tmdb_id,
+      endingTmdbId: gameData.ending_actor.tmdb_id
+    });
+  }
+
   setPossiblePaths(possiblePaths) {
     this.setState({ possiblePaths });
+  }
+
+  newGame() {
+    this.setNewGameState();
+    this.createGame();
+  }
+
+  newDemoGame(startingTmdbId, endingTmdbId) {
+    this.setNewGameState();
+    this.createDemoGame(startingTmdbId, endingTmdbId);
   }
 
   createGame() {
@@ -68,13 +101,7 @@ class Game extends Component {
       url: "/games"
     })
       .then(response => {
-        this.setState({
-          gameId: response.data.game_id,
-          currentTraceable: formatTraceable(this.props.startingType, response.data.starting_actor),
-          targetTraceable: formatTraceable(this.props.startingType, response.data.ending_actor),
-          showMovieHints: false,
-          movieHints: []
-        });
+        this.setGameStartingInfo(response.data);
         this.getMovieHints(response.data.ending_actor.id);
       })
       .catch(error => {
@@ -88,13 +115,7 @@ class Game extends Component {
       url: `/create_demo/${startingTmdbId}/${endingTmdbId}`
     })
       .then(response => {
-        this.setState({
-          gameId: response.data.game_id,
-          currentTraceable: formatTraceable(this.props.startingType, response.data.starting_actor),
-          targetTraceable: formatTraceable(this.props.startingType, response.data.ending_actor),
-          showMovieHints: false,
-          movieHints: []
-        });
+        this.setGameStartingInfo(response.data);
         this.getMovieHints(response.data.ending_actor.id);
       })
       .catch(error => {
@@ -149,7 +170,7 @@ class Game extends Component {
       startingTmdbId: prevState.endingTmdbId,
       endingTmdbId: prevState.startingTmdbId
     }));
-    this.createDemoGame(this.state.endingTmdbId, this.state.startingTmdbId);
+    this.newDemoGame(this.state.endingTmdbId, this.state.startingTmdbId);
   }
 
   toggleMovieHints() {
@@ -192,6 +213,7 @@ class Game extends Component {
           targetTraceable={this.state.targetTraceable}
           winner={this.state.winner}
           degreesCount={this.state.degreesCount}
+          newGame={this.newGame}
         />
       );
     }
@@ -241,8 +263,8 @@ Game.propTypes = {
 Game.defaultProps = {
   startingType: "Actor",
   // tmdbId 1245 = Scarlett Johannson
-  // tmdbId 9273 = Amy Adams
   startingTmdbId: 1245,
+  // tmdbId 9273 = Amy Adams
   endingTmdbId: 9273,
   maxPathCount: 8
 };
