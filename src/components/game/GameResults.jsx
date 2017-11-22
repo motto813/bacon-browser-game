@@ -25,10 +25,10 @@ const GameResults = props => {
       />
     );
     if (props.pathsChosen.slice(-1)[0].type === "Actor") {
-      paths.push(<Traceable key={Math.random()} type="Movie" />);
+      paths.push(<Traceable key={Math.random()} type="Movie" name="unknown" />);
     } else {
-      paths.push(<Traceable key={Math.random()} type="Actor" />);
-      paths.push(<Traceable key={Math.random()} type="Movie" />);
+      paths.push(<Traceable key={Math.random()} type="Actor" name="unknown" />);
+      paths.push(<Traceable key={Math.random()} type="Movie" name="unknown" />);
     }
     paths.push(targetTraceable);
   }

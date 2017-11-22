@@ -17,7 +17,7 @@ const Traceable = props => {
   else
     image = (
       <img
-        className="loading-traceable"
+        className={props.name === "loading" ? "loading-traceable" : null}
         src={props.type !== "Movie" ? portraitPlaceholder : genericPoster}
         alt={`${props.type}-placeholder`}
       />
@@ -36,7 +36,7 @@ Traceable.propTypes = {
 Traceable.defaultProps = {
   isCurrent: false,
   type: "default",
-  name: "",
+  name: "loading",
   image: ""
 };
 
