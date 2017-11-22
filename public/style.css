@@ -78,8 +78,8 @@ html {
 
 .current-traceable {
   position: absolute;
-  left: 0;
-  right: 0;
+  /*left: 0;*/
+  /*right: 0;*/
   margin: 0 auto;
 }
 
@@ -89,6 +89,10 @@ html {
 
 .current-traceable.ending {
   bottom: 4%;
+}
+
+.current-traceable.pending-path {
+  width: 100%;
 }
 
 .traceable > img {
@@ -201,14 +205,15 @@ html {
 .modify-game {
   position: absolute;
   width: 25%;
-  bottom: 8px;
+  bottom: 5%;
 }
 
-.end-game {
+.how-to-play {
   left: 20px;
 }
 
-.new-players {
+.new-players,
+.end-game {
   right: 20px;
 }
 

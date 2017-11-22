@@ -100,6 +100,7 @@ class Game extends Component {
       this.setState(prevState => ({
         pathsChosen: prevState.pathsChosen.concat(prevState.targetTraceable)
       }));
+      // IF the last path chosen isn't a Movie, THEN add a question mark Movie before the target traceable
     }
   }
 
@@ -165,8 +166,11 @@ class Game extends Component {
         <div className="current-traceable ending">
           {!this.state.initialPathChosen ? endingInfo : null}
           <PossiblePath isCurrent traceable={this.state.targetTraceable} />
-          {!this.state.initialPathChosen ? newPlayers : endGame}
         </div>
+        <div className="modify-game how-to-play">
+          <button>How to Play</button>
+        </div>
+        {!this.state.initialPathChosen ? newPlayers : endGame}
       </div>
     );
   }
