@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import gameAPI from "../../gameAPI";
 import PathSelection from "./PathSelection";
@@ -96,12 +97,6 @@ class Game extends Component {
 
   endGame() {
     this.setState({ gameOver: true });
-    if (!this.state.winner) {
-      this.setState(prevState => ({
-        pathsChosen: prevState.pathsChosen.concat(prevState.targetTraceable)
-      }));
-      // IF the last path chosen isn't a Movie, THEN add a question mark Movie before the target traceable
-    }
   }
 
   // swapCurrentTraceables() {
@@ -139,6 +134,7 @@ class Game extends Component {
       return (
         <GameResults
           pathsChosen={this.state.pathsChosen}
+          targetTraceable={this.state.targetTraceable}
           winner={this.state.winner}
           degreesCount={this.state.degreesCount}
         />
@@ -157,6 +153,7 @@ class Game extends Component {
         </div>
         {this.state.initialPathChosen ? (
           <PathSelection
+            currentType={this.state.currentTraceable.type}
             possiblePaths={this.state.possiblePaths}
             defaultPathCount={this.props.maxPathCount}
             targetId={this.state.targetTraceable.id}
@@ -167,9 +164,11 @@ class Game extends Component {
           {!this.state.initialPathChosen ? endingInfo : null}
           <PossiblePath isCurrent traceable={this.state.targetTraceable} />
         </div>
-        <div className="modify-game how-to-play">
-          <button>How to Play</button>
-        </div>
+        <Link to="/">
+          <div className="modify-game how-to-play">
+            <button>Quit</button>
+          </div>
+        </Link>
         {!this.state.initialPathChosen ? newPlayers : endGame}
       </div>
     );

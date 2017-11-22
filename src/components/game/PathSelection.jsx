@@ -51,7 +51,9 @@ class PathSelection extends Component {
     let paths;
 
     if (this.state.loadingPaths) {
-      paths = [...Array(this.props.defaultPathCount)].map((element, index) => <Traceable key={index} />);
+      paths = [...Array(this.props.defaultPathCount)].map((element, index) => (
+        <Traceable key={index} type={this.props.currentType !== "Actor" ? "Actor" : "Movie"} />
+      ));
     } else {
       paths = this.props.possiblePaths.map(path => (
         <PossiblePath key={path.id} traceable={path} targetId={this.props.targetId} pathEvent={this.setPendingPath} />
@@ -72,6 +74,7 @@ class PathSelection extends Component {
 }
 
 PathSelection.propTypes = {
+  currentType: PropTypes.string,
   possiblePaths: PropTypes.arrayOf(
     PropTypes.shape({
       type: PropTypes.string,
@@ -86,6 +89,7 @@ PathSelection.propTypes = {
 };
 
 PathSelection.defaultProps = {
+  currentType: "default",
   possiblePaths: [
     {
       type: "default",

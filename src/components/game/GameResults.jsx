@@ -15,6 +15,24 @@ const GameResults = props => {
     <Traceable key={index} type={path.type} name={path.name} image={path.image} />
   ));
 
+  if (!props.winner) {
+    const targetTraceable = (
+      <Traceable
+        key={Math.random()}
+        type={props.targetTraceable.type}
+        name={props.targetTraceable.name}
+        image={props.targetTraceable.image}
+      />
+    );
+    if (props.pathsChosen.slice(-1)[0].type === "Actor") {
+      paths.push(<Traceable key={Math.random()} type="Movie" />);
+    } else {
+      paths.push(<Traceable key={Math.random()} type="Actor" />);
+      paths.push(<Traceable key={Math.random()} type="Movie" />);
+    }
+    paths.push(targetTraceable);
+  }
+
   return (
     <div className="results-container">
       <div className="synopsis">
@@ -38,6 +56,12 @@ GameResults.propTypes = {
       image: PropTypes.string
     })
   ),
+  targetTraceable: PropTypes.shape({
+    type: PropTypes.string,
+    id: PropTypes.number,
+    name: PropTypes.string,
+    image: PropTypes.string
+  }),
   winner: PropTypes.bool,
   degreesCount: PropTypes.number
 };
@@ -50,6 +74,12 @@ GameResults.defaultProps = {
       image: ""
     }
   ],
+  targetTraceable: {
+    type: "default",
+    id: Math.random(),
+    name: "",
+    image: ""
+  },
   winner: false,
   degreesCount: 0
 };

@@ -100,20 +100,37 @@ html {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.traceable-large > img {
-  height: 170px;
-}
+.traceable-large img {
+  --default-width: 110px;
 
-.traceable-large > .loading > img {
-  height: 170px;
+  height: calc(var(--default-width) * 1.5);
+  width: calc(var(--default-width));
+  height: width * 1.5;
 }
 
 .traceable-small > img {
-  height: 100px;
+  --default-width: 65px;
+
+  height: calc(var(--default-width) * 1.5);
+  width: calc(var(--default-width));
+  height: width * 1.5;
 }
 
-.traceable-small > .loading > img {
-  height: 75px;
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+img.loading-traceable {
+  animation: blink 2s;
+  animation-iteration-count: infinite;
 }
 
 .paths-container {
@@ -176,6 +193,7 @@ html {
 
 .paths-chosen-container > .traceable {
   width: 60%;
+  height: 98px;
   margin: 0 auto;
   display: flex;
 }

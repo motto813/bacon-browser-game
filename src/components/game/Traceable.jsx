@@ -1,20 +1,27 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Spinner from "../common/Spinner";
 
 if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
   require("../../../public/style.css");
 }
 
 const Traceable = props => {
+  const imageSize = props.isCurrent ? "large" : "small";
+
+  const portraitPlaceholder = "/public/img/portrait-placeholder.png";
+  const genericPoster = "/public/img/generic-poster.jpg";
+
   let image;
-  let imageSize;
 
   if (props.image) image = <img src={`https://image.tmdb.org/t/p/w185/${props.image}`} alt={`${props.name}`} />;
-  else image = <Spinner />;
-
-  if (props.isCurrent) imageSize = "large";
-  else imageSize = "small";
+  else
+    image = (
+      <img
+        className="loading-traceable"
+        src={props.type !== "Movie" ? portraitPlaceholder : genericPoster}
+        alt={`${props.type}-placeholder`}
+      />
+    );
 
   return <div className={`traceable traceable-${imageSize} traceable-${props.type.toLowerCase()}`}>{image}</div>;
 };
