@@ -64,6 +64,7 @@ html {
 }
 
 .play-first-path {
+  padding-top: 12%;
   width: 90%;
 }
 
@@ -98,7 +99,7 @@ html {
 }
 
 .current-traceable.ending {
-  bottom: 7%;
+  bottom: 1%;
 }
 
 .current-traceable > .possible-path {
@@ -116,7 +117,7 @@ html {
 }
 
 .traceable-large img {
-  --default-width: 110px;
+  --default-width: 100px;
 
   height: calc(var(--default-width) * 1.5);
   width: calc(var(--default-width));
@@ -149,6 +150,7 @@ img.loading-traceable {
 }
 
 .paths-container {
+  padding-top: 12%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -261,7 +263,7 @@ img.loading-traceable {
 
 .movie-hints-container {
   position: absolute;
-  bottom: 17%;
+  bottom: 11%;
   width: 75%;
   z-index: -1;
   display: flex;
@@ -276,7 +278,7 @@ img.loading-traceable {
 .modify-game {
   position: absolute;
   width: 25%;
-  bottom: 8%;
+  bottom: 2%;
 }
 
 .how-to-play {
