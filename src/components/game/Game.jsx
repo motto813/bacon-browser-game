@@ -193,7 +193,14 @@ class Game extends Component {
     );
     const playFirstPath = (
       <div className="play-first-path" onClick={this.handleFirstPathClick}>
-        <button>Start Searching</button>
+        <button>
+          {this.state.currentTraceable.name
+            ? `Look in ${this.state.currentTraceable.name.substring(
+                0,
+                this.state.currentTraceable.name.indexOf(" ")
+              )}'s Movies`
+            : "Loading..."}
+        </button>
       </div>
     );
     const endingInfo = (
@@ -202,6 +209,9 @@ class Game extends Component {
         <h4>{this.state.targetTraceable.name}</h4>
       </div>
     );
+    const movieHints = this.state.movieHints
+      .slice(0, 2)
+      .map(movie => <Traceable type={movie.type} name={movie.name} image={movie.image} />);
     const swapPlayers = (
       <div className="modify-game new-players" onClick={this.swapCurrentTraceables}>
         <button>Swap</button>
@@ -212,9 +222,6 @@ class Game extends Component {
         <button>Give Up</button>
       </div>
     );
-    const movieHints = this.state.movieHints
-      .slice(0, 2)
-      .map(movie => <Traceable type={movie.type} name={movie.name} image={movie.image} />);
 
     if (this.state.gameOver) {
       return (
