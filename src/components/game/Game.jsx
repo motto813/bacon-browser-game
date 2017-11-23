@@ -1,10 +1,8 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import gameAPI from "../../gameAPI";
 import PathSelection from "./PathSelection";
 import GameResults from "./GameResults";
-import PossiblePath from "./PossiblePath";
 import formatTraceable from "../../helpers/GameHelper";
 import Traceable from "./Traceable";
 
@@ -36,6 +34,7 @@ class Game extends Component {
     this.endGame = this.endGame.bind(this);
     this.swapCurrentTraceables = this.swapCurrentTraceables.bind(this);
     this.toggleMovieHints = this.toggleMovieHints.bind(this);
+    this.handleFirstPathClick = this.handleFirstPathClick.bind(this);
   }
 
   componentDidMount() {
@@ -62,6 +61,8 @@ class Game extends Component {
   setNewGameState() {
     this.setState({
       initialPathChosen: false,
+      currentTraceable: {},
+      targetTraceable: {},
       showMovieHints: false,
       movieHints: [],
       pathsChosen: [],
@@ -179,22 +180,31 @@ class Game extends Component {
     }));
   }
 
+  handleFirstPathClick() {
+    this.choosePath(this.state.currentTraceable);
+  }
+
   render() {
     const startingInfo = (
       <div className="starting-info info-text">
         <h2>Starting with</h2>
-        <h3>{this.state.currentTraceable.name}</h3>
+        <h4>{this.state.currentTraceable.name}</h4>
+      </div>
+    );
+    const playFirstPath = (
+      <div className="play-first-path" onClick={this.handleFirstPathClick}>
+        <button>Start Searching</button>
       </div>
     );
     const endingInfo = (
       <div className="starting-info info-text">
         <h2>Find a path to</h2>
-        <h3>{this.state.targetTraceable.name}</h3>
+        <h4>{this.state.targetTraceable.name}</h4>
       </div>
     );
     const swapPlayers = (
       <div className="modify-game new-players" onClick={this.swapCurrentTraceables}>
-        <button>Swap Starters</button>
+        <button>Swap</button>
       </div>
     );
     const endGame = (
@@ -222,10 +232,11 @@ class Game extends Component {
       <div className="game-container">
         <div className="current-traceable starting">
           {!this.state.initialPathChosen ? startingInfo : null}
-          <PossiblePath
+          <Traceable
             isCurrent
-            traceable={this.state.currentTraceable}
-            pathEvent={!this.state.initialPathChosen ? this.choosePath : undefined}
+            type={this.state.currentTraceable.type}
+            name={this.state.currentTraceable.name}
+            image={this.state.currentTraceable.image}
           />
         </div>
         {this.state.initialPathChosen ? (
@@ -236,16 +247,21 @@ class Game extends Component {
             targetId={this.state.targetTraceable.id}
             choosePath={this.choosePath}
           />
-        ) : null}
+        ) : (
+          playFirstPath
+        )}
         <div className="current-traceable ending">
           {!this.state.initialPathChosen ? endingInfo : null}
-          <PossiblePath isCurrent traceable={this.state.targetTraceable} pathEvent={this.toggleMovieHints} />
+          <Traceable
+            isCurrent
+            type={this.state.targetTraceable.type}
+            name={this.state.targetTraceable.name}
+            image={this.state.targetTraceable.image}
+          />
         </div>
         <div className="movie-hints-container">{this.state.showMovieHints ? movieHints : null}</div>
-        <div className="modify-game how-to-play">
-          <Link to="/">
-            <button>Quit</button>
-          </Link>
+        <div className="modify-game how-to-play" onClick={this.toggleMovieHints}>
+          <button>Hint</button>
         </div>
         {!this.state.initialPathChosen ? swapPlayers : endGame}
       </div>
