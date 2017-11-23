@@ -64,7 +64,7 @@ html {
 }
 
 .play-first-path {
-  padding-top: 12%;
+  padding-top: 14%;
   width: 90%;
 }
 
@@ -95,7 +95,7 @@ html {
 }
 
 .current-traceable.starting {
-  top: 7%;
+  top: 10%;
 }
 
 .current-traceable.ending {
@@ -150,7 +150,7 @@ img.loading-traceable {
 }
 
 .paths-container {
-  padding-top: 12%;
+  padding-top: 14%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -244,7 +244,7 @@ img.loading-traceable {
 }
 
 .clickable-path {
-  width: 25%;
+  width: 26%;
   margin: 30px auto;
 }
 
@@ -278,7 +278,7 @@ img.loading-traceable {
 .modify-game {
   position: absolute;
   width: 25%;
-  bottom: 2%;
+  bottom: 1.8%;
 }
 
 .how-to-play {
