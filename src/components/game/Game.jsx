@@ -192,7 +192,7 @@ class Game extends Component {
       </div>
     );
     const playFirstPath = (
-      <div className="play-first-path" onClick={this.handleFirstPathClick}>
+      <div className="play-first-path" onClick={this.state.currentTraceable.name ? this.handleFirstPathClick : null}>
         <button>
           {this.state.currentTraceable.name
             ? `Look in ${this.state.currentTraceable.name.substring(
@@ -211,9 +211,20 @@ class Game extends Component {
     );
     const movieHints = this.state.movieHints
       .slice(0, 2)
-      .map(movie => <Traceable type={movie.type} name={movie.name} image={movie.image} />);
+      .map(movie => <Traceable key={movie.id} type={movie.type} name={movie.name} image={movie.image} />);
+    const showHints = (
+      <div
+        className="modify-game how-to-play"
+        onClick={this.state.currentTraceable.name ? this.toggleMovieHints : null}
+      >
+        <button>Hint</button>
+      </div>
+    );
     const swapPlayers = (
-      <div className="modify-game new-players" onClick={this.swapCurrentTraceables}>
+      <div
+        className="modify-game new-players"
+        onClick={this.state.currentTraceable.name ? this.swapCurrentTraceables : null}
+      >
         <button>Swap</button>
       </div>
     );
@@ -267,9 +278,7 @@ class Game extends Component {
           />
         </div>
         <div className="movie-hints-container">{this.state.showMovieHints ? movieHints : null}</div>
-        <div className="modify-game how-to-play" onClick={this.toggleMovieHints}>
-          <button>Hint</button>
-        </div>
+        {showHints}
         {!this.state.initialPathChosen ? swapPlayers : endGame}
       </div>
     );
